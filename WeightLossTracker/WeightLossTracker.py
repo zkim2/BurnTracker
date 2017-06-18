@@ -16,13 +16,19 @@ email: zkim2@illinois.edu
 Features I need to implement:
 
 
--Give user a summary of their diet plan after creating a new profile. x
+-Give user a summary of their diet plan after creating a new profile. 
 -Visualization of dietary and exercise programs for each profile. (add human body graphic that gets skinnier proportional to user's weight loss)
 -Allow users to email an address or text to send in data which is easier than logging into the computer everyday.
 -Make this script an executable if possible. 
 -Eventually transition from command line to GUI.
 
 
+
+PRIORITY
+
+-Make activity level more descriptive so user knows which to choose.
+-User can change deficit and activity level.
+-Save png every time user wants to visualize progress.
 """
 
 class Profile:
@@ -120,7 +126,6 @@ while mainLoopRun:
 			profileLoop = False
 
 	
-
 	#not in the system
 	if(inSystem == False): 
 
@@ -139,7 +144,7 @@ while mainLoopRun:
 		#updates all information about the person
 		passed = newProfile.calculateDailyCalories() 
 
-
+		#give user diet summary
 		print("\n Welcome, " + newProfile.name + "." + "\n With the deficit you entered, you should be eating " + str(newProfile.dailyCalories) + " calories per day. \n")
 
 		endDate = (datetime.datetime.today() + (7*datetime.timedelta(days=newProfile.weeksToFinish)))
@@ -148,12 +153,11 @@ while mainLoopRun:
 		print("\n With these calories, you will lose " + str((newProfile.intensity * 7) / 3500) + " pounds per week.")
 		print("\n You will reach your goal weight in " + str(newProfile.weeksToFinish) + " weeks on " + endDate.strftime("%m/%d/%y") + ".")
 
+
 		#pickles the Profile which saves the data associated with it
 		pickle_outNewProfile = open(newName + ".pickle", "wb")
 		pickle.dump(newProfile, pickle_outNewProfile)
 		pickle_outNewProfile.close()
-
-		#the user has the option to go back and enter in another name or to have access to options bc already in the system.
 
 
 	#already in the system so no need to ask questions again
@@ -170,15 +174,17 @@ while mainLoopRun:
 	
 	subLoopRun = True
 
+	#this loops allows the user to choose the options and also come back to choose another option, extends life of the program.
 	while subLoopRun:
-
-		choice = int(input('\n What would you like to do? \n 1. Add daily weight \n 2. Add daily calories \n 3. Visualize weight loss progress \n 4. Update Profile \n 5. Back \n 6. Quit '))
-
-		print(userProfile.weightData)
-		print(userProfile.caloricData)
 
 		print('\n The date is currently ' + str(currentDate))
 
+		#print(userProfile.weightData)
+		#print(userProfile.caloricData)
+
+		choice = int(input('\n Main Menu: \n 1. Add daily weight \n 2. Add daily calories \n 3. Visualize weight loss progress \n 4. Update Profile \n 5. Back \n 6. Quit '))
+
+	
 		if(choice == 1):
 
 			weight = float(input('\n What is your current weight in lbs?'))
@@ -207,7 +213,7 @@ while mainLoopRun:
 
 			todaysCalories = float(input('\n How many calories did you eat today?'))
 
-			updateChoice = "y"
+			updateChoice = "y" #considered a boolean but this is fine as long as the user knows what input to give.
 			
 			#handles case of multiple weight entries on the same day
 			for key in userProfile.caloricData:
@@ -229,15 +235,15 @@ while mainLoopRun:
 
 			visualizationLoop = True
 
-			while visualizationLoop:
+			while visualizationLoop: #again, gives user options to go back or forward in the program.
 
-				calOrWeight = int(input('Which graph would you like to see? \n 1. Weight Loss \n 2. Calories \n 3. Back'))
+				calOrWeight = int(input('\n Graph Menu: \n 1. Weight Loss \n 2. Calories \n 3. Back'))
 
-				today = currentDate.strftime("%Y/%m/%d")
+				today = currentDate.strftime("%m/%d/%y")
 
 				if(calOrWeight == 1):
 
-					print('Loading weight loss graph!')
+					print('\n Loading weight loss graph!')
 
 					#sorts the keys (dateTime objects) in the dictionary.
 					sortedData = sorted(userProfile.weightData.items(), key = lambda d: d[0])
@@ -253,9 +259,13 @@ while mainLoopRun:
 					plt.xlabel('Time (days)')
 					plt.show()
 
+					#print("Saving the file now......")
+
+					#plt.savefig(userProfile.name + str(currentDate) + ".png")
+
 				elif(calOrWeight == 2):
 
-					print('Loading calorie graph!')
+					print('\n Loading calorie graph!')
 
 					sortedData = sorted(userProfile.caloricData.items(), key = lambda d: d[0])
 
@@ -280,9 +290,9 @@ while mainLoopRun:
 
 			modifyLoopRun = True
 
-			while modifyLoopRun:
+			while modifyLoopRun: #another menu but for updating the profile data.
 
-				updateProfileChoice = int(input('\n 1. Modify weight of specified date \n 2. Delete a date and weight \n 3. Add a missed weight \n 4. Modify calories of a specified date \n 5. Delete a date and calories \n 6. Add missed calories \n 7. Back \n 8. Quit '))
+				updateProfileChoice = int(input('\n Profile Update Menu: \n 1. Modify weight of specified date \n 2. Delete a date and weight \n 3. Add a missed weight \n 4. Modify calories of a specified date \n 5. Delete a date and calories \n 6. Add missed calories \n 7. Back \n 8. Quit '))
 
 			
 				#need to check if date is valid and in the dict first.
@@ -293,32 +303,78 @@ while mainLoopRun:
 
 					updatedDateTime = datetime.datetime.strptime(dateString, '%m/%d/%y')
 
+
 					if(updateProfileChoice == 2):
 
 						userProfile.weightData.pop(updatedDateTime.date(), None) 
+
+						print('\n Date and weight deleted!')
 
 					elif(updateProfileChoice == 5):
 
 						userProfile.caloricData.pop(updatedDateTime.date(), None)
 
+						print('\n Date and calories deleted!')
+
+
 					elif(updateProfileChoice == 1 or updateProfileChoice == 3):
 
-							updatedWeight = float(input('\n Please enter the new weight: '))
+							overwriteData = "y"
 
-							userProfile.weightData[updatedDateTime.date()] = updatedWeight	
+							#check to see if adding a missed weight is incorrect
+							if(updateProfileChoice == 3):
 
-					else: 	#updatedProfileChoice == 4 or updatedProfileChoice == 6):
+								for key in userProfile.weightData:
 
-							updatedCalories = float(input('\n Please enter new calories: '))
+									if(key == updatedDateTime.date()): #found already
 
-							userProfile.caloricData[updatedDateTime.date()] = updatedCalories
+										overwriteData = str(input("\n It seems that there is already a weight in for this date. \n Overwrite it? (y/n) \n"))
+	
+
+							if(overwriteData == "y"):
+
+								updatedWeight = float(input('\n Please enter the new weight: '))
+
+								userProfile.weightData[updatedDateTime.date()] = updatedWeight	
+
+								print("\n The date and weight have been overwritten.")
+
+							else:
+
+								print('\n The date and weight have not been overwritten.')
 
 
+					elif(updateProfileChoice == 4 or updateProfileChoice == 6):	#updatedProfileChoice == 4 or updatedProfileChoice == 6):
+
+							overwriteData = "y"
+
+							#check to see if adding missed calories is incorrect
+							if(updateProfileChoice == 6):
+
+								for key in userProfile.caloricData:
+
+									if(key == updatedDateTime.date()):
+
+										overwriteData = str(input("\n It seems that there is already calories in for this date. \n Overwrite it? (y/n) \n"))
+
+
+							if(overwriteData == "y"):
+
+								updatedCalories = float(input('\n Please enter new calories: '))
+
+								userProfile.caloricData[updatedDateTime.date()] = updatedCalories
+
+								print("\n The date and calories have been overwritten")
+
+							else:
+
+								print('\n The date and calories have not been overwritten.')
+
+
+					#this will run regardless of the if/elif statements
 					pickle_outModify= open(userProfile.name + ".pickle", "wb")
 					pickle.dump(userProfile, pickle_outModify)
 					pickle_outModify.close()
-
-					print('\n Successfully changed!')
 
 				elif(updateProfileChoice == 7):
 
@@ -341,5 +397,5 @@ while mainLoopRun:
 			exit()
 
 		else:
-
+			print('Error: Invalid Input, Try again.')
 			subLoopRun = True
