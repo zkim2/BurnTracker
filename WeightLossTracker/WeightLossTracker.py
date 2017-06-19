@@ -4,6 +4,8 @@ import pickle
 import matplotlib.pyplot as plt
 
 
+
+
 """
 Author: Zachary Kim
 
@@ -15,19 +17,14 @@ email: zkim2@illinois.edu
 
 Features I need to implement:
 
-
--Give user a summary of their diet plan after creating a new profile. 
 -Visualization of dietary and exercise programs for each profile. (add human body graphic that gets skinnier proportional to user's weight loss)
 -Allow users to email an address or text to send in data which is easier than logging into the computer everyday.
 -Make this script an executable if possible. 
 -Eventually transition from command line to GUI.
 
 
-
 PRIORITY
 
--Make activity level more descriptive so user knows which to choose.
--User can change deficit and activity level.
 -Save png every time user wants to visualize progress.
 """
 
@@ -116,13 +113,21 @@ while mainLoopRun:
 
 		if(inSystem == False):
 
-			mistake = int(input('\n Uh-oh no profile found. \n 1. Create a profile \n 2. Retype profile name \n'))
+			mistake = int(input('\n Uh-oh no profile found. \n 1. Create a profile \n 2. Retype profile name \n 3. Quit \n'))
 
 			if(mistake == 1):
+
 				profileLoop = False
-			else:
+
+			elif(mistake == 2):
+
 				profileLoop = True
-		else:
+
+			else:
+
+				exit()
+		else: #if already in the system, just exit.
+
 			profileLoop = False
 
 	
@@ -133,7 +138,7 @@ while mainLoopRun:
 		currWeight = float(input('\n What is your current weight?(lbs): '))
 		currHeight = float(input('\n What is your current height?(inches): '))
 		goalWeight = float(input('\n What is your goal weight?(lbs):  '))
-		activityLvl = float(input('\n What is your activity level? (1-5 from low to high): '))
+		activityLvl = float(input("\n Enter in your activity level: \n 1 (None) \n 2 (Low) \n 3 (Medium) \n 4 (High) \n 5 (Intense)"))
 		desiredIntensity = float(input('\n What do you want your daily caloric deficit to be? \n 1000 \n 750 \n 500 \n '))
 
 		newProfile = Profile(newName,newAge,currWeight,currHeight,goalWeight,activityLvl,desiredIntensity)
@@ -166,11 +171,11 @@ while mainLoopRun:
 
 	userProfile = pickle.load(pickle_inProfile)
 
-	print('\n Profile Login successful.')	
-
 	userProfile.calculateDailyCalories()
 
-	print("\n You should eat " + str(userProfile.dailyCalories) + " today to maintain your ideal pound loss per week.")
+	print('\n Profile Login successful.')	
+
+	print("\n You should eat " + str(userProfile.dailyCalories) + " today to maintain your ideal pound loss per week. \n")
 	
 	subLoopRun = True
 
@@ -292,9 +297,9 @@ while mainLoopRun:
 
 			while modifyLoopRun: #another menu but for updating the profile data.
 
-				updateProfileChoice = int(input('\n Profile Update Menu: \n 1. Modify weight of specified date \n 2. Delete a date and weight \n 3. Add a missed weight \n 4. Modify calories of a specified date \n 5. Delete a date and calories \n 6. Add missed calories \n 7. Back \n 8. Quit '))
-
-			
+				#this is too long, need to shorten
+				updateProfileChoice = int(input('\n Profile Update Menu: \n 1. Modify weight of specified date \n 2. Delete a date and weight \n 3. Add a missed weight \n 4. Modify calories of a specified date \n 5. Delete a date and calories \n 6. Add missed calories \n 7. Modify caloric deficit \n 8. Modify activity level \n 9. Back \n 10. Quit'))
+	
 				#need to check if date is valid and in the dict first.
 
 				if(updateProfileChoice >= 1 and updateProfileChoice <= 6):
@@ -376,11 +381,26 @@ while mainLoopRun:
 					pickle.dump(userProfile, pickle_outModify)
 					pickle_outModify.close()
 
-				elif(updateProfileChoice == 7):
+				elif(updatedProfileChoice = 7):
+					newCalories = float(input("Enter in your desired daily caloric deficit: "))
+
+					userProfile.intensity = newCalories
+					userProfile.calculateDailyCalories() #update object information in case user wants to remain in the program 
+
+					print("Caloric deficit updated!")
+
+				elif(updatedProfileChoice == 8):
+
+					newActivityLevel = int(input("Enter in your activity level: \n 1 (None) \n 2 (Low) \n 3 (Medium) \n 4 (High) \n 5 (Intense)"))
+
+					userProfile.actLvl = newActivityLevel
+					userProfile.calculateDailyCalories() #update object information in case user wants to remain in the program 
+
+				elif(updateProfileChoice == 9):
 
 					modifyLoopRun = False
 
-				elif(updateProfileChoice == 8):
+				elif(updateProfileChoice == 10):
 
 					exit()
 
