@@ -6,11 +6,11 @@ from Profile import Profile #use as an instance
 
 
 """
-Author: Zachary Kim
-
-Weight Loss Tracker 
+Made by Zachary Kim
 
 email: zkim2@illinois.edu
+
+Weight Loss Tracker 
 
 Features I need to implement:
 
@@ -27,6 +27,7 @@ def main():
 	currentDate = datetime.date.today()
 
 	mainLoopRun = True
+
 
 	while mainLoopRun:
 
