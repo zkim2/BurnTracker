@@ -2,6 +2,7 @@ import tkinter as tk
 import time
 from mistypeCreateFrame import mistypeCreateFrame
 from startFrame import startFrame
+from retrieveDataFrame import retrieveDataFrame
 from Profile import Profile
 
 """
@@ -49,13 +50,18 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		frameBegin = startFrame(self.mainFrame, self)
 		
 		frameOops = mistypeCreateFrame(self.mainFrame, self)
+
+		frameInfo = retrieveDataFrame(self.mainFrame,self)
 		
 		self.subFrames[startFrame.__name__] = frameBegin
 		self.subFrames[mistypeCreateFrame.__name__] = frameOops
+		self.subFrames[retrieveDataFrame.__name__] = frameInfo
 	
 		frameBegin.grid(row=0, column=0,sticky="nsew")
 
 		frameOops.grid(row=0, column=0,sticky="nsew")
+
+		frameInfo.grid(row=0,column=0,sticky="nsew")
 
 		self.raiseWidget("startFrame")
 		
@@ -64,7 +70,9 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.subFrames[name].tkraise()
 		
-		
+
+
+#THIS SECTION CONTROLS IF USER INPUTS A PROFILE THAT IS NOT IN THE CURRENT DIRECTORY
 	def checkProfileValid(self,event):
 
 		potentialProfileName = self.subFrames["startFrame"].loginEntry.get()
@@ -72,11 +80,23 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		result = self.userProfile.findProfile(potentialProfileName)
 
 		if(result):
-			print('yay your profile is in!')
+			print("We will move you to the already made profile frame!")
 		else:
 			self.raiseWidget("mistypeCreateFrame")
-		
+	
+	def infoInput(self,event):
 
+			self.raiseWidget("retrieveDataFrame")
+
+	def backToStart(self,event):
+
+			self.raiseWidget("startFrame")
+
+	def backToProfileValid(self,event):
+
+			self.raiseWidget("mistypeCreateFrame")
+	
+#END OF PROFILE NOT IN CURRENT DIRECTORY
 
 runningApp = ProfileWindow()
 

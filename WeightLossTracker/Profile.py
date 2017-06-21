@@ -27,6 +27,7 @@ class Profile:
 
 	def __init__(self, name="", age=0, currentWeight=0, currentHeight=0, goalWeight=0, actLvl=1, intensity=1):
 
+		
 		self.name = name
 		self.age = age
 		self.currentWeight = currentWeight
@@ -40,14 +41,14 @@ class Profile:
 		self.weeksToFinish = 12 #default
 		self.weightData = {} #daily weight and date dictionary
 		self.caloricData = {} #daily calories and date dictionary
-
-		"""
+		
+		
 	def saveProfile(self): #broken for now
 
 		pickle_save = open(self.name + ".pickle", "wb")
 		pickle.dump(self, pickle_save)
 		pickle_save.close()
-		"""
+	
 
 
 	def findProfile(self, name):
@@ -79,6 +80,14 @@ class Profile:
 		else:
 
 			return True
+
+
+	def loadProfile(self,name):
+
+		pickle_loadProfile = open(newName + ".pickle", "rb")
+
+		self = pickle.load(pickle_loadProfile)
+
 
 
 	def calculateDailyCalories(self):

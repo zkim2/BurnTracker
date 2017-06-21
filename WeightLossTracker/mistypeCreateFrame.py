@@ -22,9 +22,9 @@ class mistypeCreateFrame(tk.Frame):
 		self.noProfileLabel.grid(row=0,column=0,sticky="W")
 
 		self.retypeButton = tk.Button(self, text="Retype profile name")
-		self.retypeButton.bind("<Button-1>")
+		self.retypeButton.bind("<Button-1>",self.controller.backToStart)
 		self.retypeButton.grid(row=1,column=0, sticky="W")
 
 		self.createProfileButton = tk.Button(self, text="Create a new profile")
-		self.createProfileButton.bind("<Button-1>")
+		self.createProfileButton.bind("<Button-1>", self.controller.infoInput)
 		self.createProfileButton.grid()
