@@ -1,8 +1,31 @@
 # The Profile object maintains the fitness information of each user. 
+import os
+import datetime
+import pickle
+#import matplotlib.pyplot as plt
+
+
+
+"""
+Made by Zachary Kim
+email: zkim2@illinois.edu
+
+IMPORTANT: THIS IS CONSIDERED TO BE THE MODEL OF THE PROGRAM.
+
+This Profile model handles all logic and operations of the program and communicates with the controller to 
+update the view accordingly.
+
+To do:
+
+-Transfer all code over from WeightLossTracker.py and embed it within the object itself.
+-Create more functions that make it easier for the controller to retrieve and set information.
+-Eventually deal with making variables private
+
+"""
 
 class Profile:
 
-	def __init__(self, name, age, currentWeight, currentHeight, goalWeight, actLvl, intensity):
+	def __init__(self, name="", age=0, currentWeight=0, currentHeight=0, goalWeight=0, actLvl=1, intensity=1):
 
 		self.name = name
 		self.age = age
@@ -17,6 +40,46 @@ class Profile:
 		self.weeksToFinish = 12 #default
 		self.weightData = {} #daily weight and date dictionary
 		self.caloricData = {} #daily calories and date dictionary
+
+		"""
+	def saveProfile(self): #broken for now
+
+		pickle_save = open(self.name + ".pickle", "wb")
+		pickle.dump(self, pickle_save)
+		pickle_save.close()
+		"""
+
+
+	def findProfile(self, name):
+
+
+		name = name.replace(' ' , '')
+
+		name = name.lower()
+
+		file_name = name.lower() + '.pickle'
+
+		cur_dir = os.getcwd()
+
+		inSystem = False
+
+		file_list = os.listdir(cur_dir)
+
+		for file in file_list:
+
+			if(file == file_name):
+
+				inSystem = True
+				break
+
+		if(inSystem == False):
+
+			return False
+
+		else:
+
+			return True
+
 
 	def calculateDailyCalories(self):
 

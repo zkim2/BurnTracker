@@ -12,6 +12,12 @@ email: zkim2@illinois.edu
 
 Weight Loss Tracker 
 
+
+IMPORTANT: I am currently tranferring this code to a GUI and need to actually make the code below a part
+			of the profile class itself so it can communicate easily with the model. I will delete this file
+			after all the code has been transferred to Profile.py
+
+
 Features I need to implement:
 
 -Allow users to email an address or text to send in data which is easier than logging into the computer everyday.
@@ -19,7 +25,6 @@ Features I need to implement:
 -Eventually transition from command line to GUI.
 -Save png every time user wants to visualize progress.
 """
-
 
 
 def main():
@@ -179,6 +184,7 @@ def main():
 				if(updateChoice == "y"):
 
 					userProfile.caloricData[currentDate] = todaysCalories
+
 					pickle_out2 = open(userProfile.name + ".pickle", "wb")
 					pickle.dump(userProfile, pickle_out2)
 					pickle_out2.close()

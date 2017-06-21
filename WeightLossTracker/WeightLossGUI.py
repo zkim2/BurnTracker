@@ -1,14 +1,17 @@
-from tkinter import *
-
+import tkinter as tk
+import time
+from mistypeCreateFrame import mistypeCreateFrame
+from startFrame import startFrame
+from Profile import Profile
 
 """
 Made by Zachary Kim
 email: zkim2@illinois.edu
 
+IMPORTANT: THIS IS CONSIDERED TO BE THE CONTROLLER OF THE PROGRAM.
 
-I want to turn my command line weight loss tracker program into one with a GUI. 
+Will change the file name to something more specific after all is finished.
 
-Currently learning how tkinter works..
 
 To do:
 
@@ -20,44 +23,61 @@ To do:
 
 """
 
-class ProfileWindow(Frame):
+class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will be "controller" of other frame instances
 
-	def __init__(self, master = None):
+	def __init__(self, *args, **kwargs):
 
-		super().__init__(master)
-		self.pack()
+		tk.Tk.__init__(self, *args, **kwargs)
+
+		#self.geometry("500x500+300+300")
+		self.mainFrame = tk.Frame(self) #all other frames will have this as the parent.
+
+		#self.mainFrame.grid_columnconfigure(0, weight=1)
+		#self.mainFrame.grid_rowconfigure(0,weight=1)
+
+		self.userProfile = Profile()
+
+		self.mainFrame.grid(row=0, column=0, sticky="nsew")
+
+		self.subFrames = {}
 
 		self.setUpWidgets()
 
+
 	def setUpWidgets(self):
 
-		self.welcomeLabel = Label(self, text="Weight Loss Tracker")
-		self.welcomeLabel.grid(row=0,column=0,sticky=W)
+		frameBegin = startFrame(self.mainFrame, self)
 		
-		self.loginLabel = Label(self,text="Login:")
-		self.loginLabel.grid(row=1, column = 0,sticky=W)
+		frameOops = mistypeCreateFrame(self.mainFrame, self)
+		
+		self.subFrames[startFrame.__name__] = frameBegin
+		self.subFrames[mistypeCreateFrame.__name__] = frameOops
+	
+		frameBegin.grid(row=0, column=0,sticky="nsew")
 
-		self.nameVar = StringVar()
-		self.loginEntry = Entry(self,textvariable=self.nameVar)
-		self.loginEntry.grid(row=1,column=1,sticky=W)
+		frameOops.grid(row=0, column=0,sticky="nsew")
 
-		self.submitButton = Button(self, text="Submit")	
-		self.submitButton.bind("<Button-1>", self.findProfile)
-		self.submitButton.grid(row=2, column=0)
+		self.raiseWidget("startFrame")
+		
+		
+	def raiseWidget(self, name):
 
-	def findProfile(self, event): #just playing around for now.
+		self.subFrames[name].tkraise()
+		
+		
+	def checkProfileValid(self,event):
 
-		if(self.loginEntry.get().lower() == "zachary kim"):
+		potentialProfileName = self.subFrames["startFrame"].loginEntry.get()
 
-			print("Yes!")
+		result = self.userProfile.findProfile(potentialProfileName)
 
+		if(result):
+			print('yay your profile is in!')
 		else:
+			self.raiseWidget("mistypeCreateFrame")
+		
 
-			print("No!")
 
-
-root = Tk()
-
-runningApp = ProfileWindow(master = root)
+runningApp = ProfileWindow()
 
 runningApp.mainloop()
