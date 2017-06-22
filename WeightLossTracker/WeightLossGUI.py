@@ -92,21 +92,71 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 	
 	def infoInput(self,event):
 
+			self.subFrames["retrieveDataFrame"].clearFrame() #always clear it before next input
 			self.raiseWidget("retrieveDataFrame")
 
 	def backToStart(self,event):
 
+			self.subFrames["startFrame"].clearFrame()
 			self.raiseWidget("startFrame")
-
+			
 	def backToProfileValid(self,event):
 
 			self.raiseWidget("mistypeCreateFrame")
-
+			
 	def exit(self,event):
 
-			exit()
+			self.exit()
 	
 #END OF PROFILE NOT IN CURRENT DIRECTORY
+
+	def checkInputValid(self,event): #eager to put it in frame class but need to separate the controller and frame
+
+		inputAge = self.subFrames["retrieveDataFrame"].ageVar.get()
+		inputWeight = self.subFrames["retrieveDataFrame"].weightVar.get()
+		inputHeight = self.subFrames["retrieveDataFrame"].heightVar.get()
+		inputGoalWeight = self.subFrames["retrieveDataFrame"].goalWeightVar.get()
+		inputActLvl = self.subFrames["retrieveDataFrame"].activityLvlVar.get()
+		inputIntensity = self.subFrames["retrieveDataFrame"].intensityVar.get()
+
+		passed = True
+
+		print(type(inputAge))
+		if(inputAge <= 0 or inputAge >=130):
+	
+			self.subFrames["retrieveDataFrame"].fieldInvalid(1)
+			passed=False
+
+		if(inputWeight <=0 or inputWeight >= 1000):
+		
+			self.subFrames["retrieveDataFrame"].fieldInvalid(2)
+			passed=False
+
+		if(inputHeight <= 0 or inputHeight >= 84):
+
+			self.subFrames["retrieveDataFrame"].fieldInvalid(3)
+			passed=False
+
+		if(inputGoalWeight >= inputWeight or inputGoalWeight <=0 or inputGoalWeight >= 1000):
+
+			self.subFrames["retrieveDataFrame"].fieldInvalid(4)
+			passed=False
+
+		if(inputActLvl < 1 or inputActLvl > 5):
+
+			self.subFrames["retrieveDataFrame"].fieldInvalid(5)
+			passed=False
+
+		if(inputIntensity != 500 and inputIntensity != 750 and inputIntensity != 1000):
+
+			self.subFrames["retrieveDataFrame"].fieldInvalid(6)
+			passed=False
+
+	
+		if(passed):
+			print("Success!!!")
+			#self.raiseWidget("SuccessCreate") this is where we initialize our profile
+
 
 runningApp = ProfileWindow()
 

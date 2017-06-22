@@ -32,3 +32,8 @@ class startFrame(tk.Frame):
 		self.submitButton = tk.Button(self, text="Submit")	
 		self.submitButton.bind("<Button-1>", self.controller.checkProfileValid)
 		self.submitButton.grid(row=3, column=0)
+
+
+	def clearFrame(self):
+
+		self.nameVar.set("")

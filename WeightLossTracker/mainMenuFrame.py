@@ -10,30 +10,30 @@ class mainMenuFrame(tk.Frame):
 		self.controller = controller
 
 
-		toDoLabel = tk.Label(self, text="What would you like to do?")
-		toDoLabel.grid(row=0,column=0,sticky="nsew")
+		self.toDoLabel = tk.Label(self, text="What would you like to do?")
+		self.toDoLabel.grid(row=0,column=0,sticky="nsew")
 
 
-		addDailyWeightButton = tk.Button(self,text="Add daily weight")
-		addDailyWeightButton.bind("<Button-1>") #bind it to a function in controller
-		addDailyWeightButton.grid(row=1,column=0,sticky="nsew")
+		self.addDailyWeightButton = tk.Button(self,text="Add daily weight")
+		self.addDailyWeightButton.bind("<Button-1>") #bind it to a function in controller
+		self.addDailyWeightButton.grid(row=1,column=0,sticky="nsew")
 
-		addDailyCaloriesButton = tk.Button(self,text="Add daily calories")
-		addDailyCaloriesButton.bind("<Button-1>") #bind it to a function in controller
-		addDailyCaloriesButton.grid(row=1,column=1,sticky="nsew")
+		self.addDailyCaloriesButton = tk.Button(self,text="Add daily calories")
+		self.addDailyCaloriesButton.bind("<Button-1>") #bind it to a function in controller
+		self.addDailyCaloriesButton.grid(row=1,column=1,sticky="nsew")
 
-		visualizeProgressButton = tk.Button(self,text="Visualize progress")
-		visualizeProgressButton.bind("<Button-1>") #bind it to a function in controller
-		visualizeProgressButton.grid(row=2,column=0,sticky="nsew")
+		self.visualizeProgressButton = tk.Button(self,text="Visualize progress")
+		self.visualizeProgressButton.bind("<Button-1>") #bind it to a function in controller
+		self.visualizeProgressButton.grid(row=2,column=0,sticky="nsew")
 
-		updateProfileButton = tk.Button(self,text="Update your profile")
-		updateProfileButton.bind("<Button-1>") #bind it to a function in controller
-		updateProfileButton.grid(row=2,column=1,sticky="nsew")
+		self.updateProfileButton = tk.Button(self,text="Update your profile")
+		self.updateProfileButton.bind("<Button-1>") #bind it to a function in controller
+		self.updateProfileButton.grid(row=2,column=1,sticky="nsew")
 
-		backToStartButton = tk.Button(self,text="Back")
-		backToStartButton.bind("<Button-1>", self.controller.backToStart)
-		backToStartButton.grid(row=3,column=0,sticky="nsew")
+		self.backToStartButton = tk.Button(self,text="Back")
+		self.backToStartButton.bind("<Button-1>", self.controller.backToStart)
+		self.backToStartButton.grid(row=3,column=0,sticky="nsew")
 
-		quitButton = tk.Button(self,text="Quit")
-		quitButton.bind("<Button-1>", self.controller.exit)
-		quitButton.grid(row=3,column=1,sticky="nsew")
+		self.quitButton = tk.Button(self,text="Quit")
+		self.quitButton.bind("<Button-1>", self.controller.exit)
+		self.quitButton.grid(row=3,column=1,sticky="nsew")
