@@ -3,6 +3,7 @@ import time
 from mistypeCreateFrame import mistypeCreateFrame
 from startFrame import startFrame
 from retrieveDataFrame import retrieveDataFrame
+from mainMenuFrame import mainMenuFrame
 from Profile import Profile
 
 """
@@ -52,16 +53,21 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		frameOops = mistypeCreateFrame(self.mainFrame, self)
 
 		frameInfo = retrieveDataFrame(self.mainFrame,self)
+
+		frameMenu = mainMenuFrame(self.mainFrame,self)
 		
 		self.subFrames[startFrame.__name__] = frameBegin
 		self.subFrames[mistypeCreateFrame.__name__] = frameOops
 		self.subFrames[retrieveDataFrame.__name__] = frameInfo
+		self.subFrames[mainMenuFrame.__name__] = frameMenu
 	
 		frameBegin.grid(row=0, column=0,sticky="nsew")
 
 		frameOops.grid(row=0, column=0,sticky="nsew")
 
 		frameInfo.grid(row=0,column=0,sticky="nsew")
+
+		frameMenu.grid(row=0,column=0,sticky="nsew")
 
 		self.raiseWidget("startFrame")
 		
@@ -80,7 +86,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		result = self.userProfile.findProfile(potentialProfileName)
 
 		if(result):
-			print("We will move you to the already made profile frame!")
+			self.raiseWidget("mainMenuFrame")
 		else:
 			self.raiseWidget("mistypeCreateFrame")
 	
@@ -95,6 +101,10 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 	def backToProfileValid(self,event):
 
 			self.raiseWidget("mistypeCreateFrame")
+
+	def exit(self,event):
+
+			exit()
 	
 #END OF PROFILE NOT IN CURRENT DIRECTORY
 
