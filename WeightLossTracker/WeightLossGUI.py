@@ -1,9 +1,12 @@
 import tkinter as tk
-import time
+import datetime
+import os
+import pickle
 from mistypeCreateFrame import mistypeCreateFrame
 from startFrame import startFrame
 from retrieveDataFrame import retrieveDataFrame
 from mainMenuFrame import mainMenuFrame
+from addDailyWeightFrame import addDailyWeightFrame
 from Profile import Profile
 
 """
@@ -37,8 +40,6 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		#self.mainFrame.grid_columnconfigure(0, weight=1)
 		#self.mainFrame.grid_rowconfigure(0,weight=1)
 
-		self.userProfile = Profile()
-
 		self.mainFrame.grid(row=0, column=0, sticky="nsew")
 
 		self.subFrames = {}
@@ -55,11 +56,14 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		frameInfo = retrieveDataFrame(self.mainFrame,self)
 
 		frameMenu = mainMenuFrame(self.mainFrame,self)
+
+		frameDailyWeight = addDailyWeightFrame(self.mainFrame,self)
 		
 		self.subFrames[startFrame.__name__] = frameBegin
 		self.subFrames[mistypeCreateFrame.__name__] = frameOops
 		self.subFrames[retrieveDataFrame.__name__] = frameInfo
 		self.subFrames[mainMenuFrame.__name__] = frameMenu
+		self.subFrames[addDailyWeightFrame.__name__] = frameDailyWeight
 	
 		frameBegin.grid(row=0, column=0,sticky="nsew")
 
@@ -68,6 +72,8 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		frameInfo.grid(row=0,column=0,sticky="nsew")
 
 		frameMenu.grid(row=0,column=0,sticky="nsew")
+
+		frameDailyWeight.grid(row=0,column=0,sticky="nsew")
 
 		self.raiseWidget("startFrame")
 		
@@ -79,16 +85,47 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 
 #THIS SECTION CONTROLS IF USER INPUTS A PROFILE THAT IS NOT IN THE CURRENT DIRECTORY
-	def checkProfileValid(self,event):
+	def checkProfileValid(self,event): 
+
+		#checks current directory to see if a profile is created under this user. was originally in the model but it's easier to load object in the controller
+		#in the profile model i would be doing self = pickle.load() which doesn't work.
 
 		potentialProfileName = self.subFrames["startFrame"].loginEntry.get()
 
-		result = self.userProfile.findProfile(potentialProfileName)
+		potentialProfileName = potentialProfileName.replace(' ' , '')
 
-		if(result):
-			self.raiseWidget("mainMenuFrame")
-		else:
+		potentialProfileName= potentialProfileName.lower()
+
+		file_name = potentialProfileName + '.pickle'
+
+		cur_dir = os.getcwd()
+
+		inSystem = False
+
+		file_list = os.listdir(cur_dir)
+
+		for file in file_list:
+
+			if(file == file_name):
+
+				inSystem = True
+				break
+
+		if(inSystem == False):
+
+			self.userProfile = Profile(name=potentialProfileName) #normal constructor
 			self.raiseWidget("mistypeCreateFrame")
+
+		else:
+			
+			pickle_inProfile = open(potentialProfileName + ".pickle", "rb")
+
+			self.userProfile = pickle.load(pickle_inProfile) #previous object
+
+			print(self.userProfile.name)
+
+			self.raiseWidget("mainMenuFrame")
+
 	
 	def infoInput(self,event):
 
@@ -106,13 +143,13 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 			
 	def exit(self,event):
 
-			self.exit()
+			exit()
 	
 #END OF PROFILE NOT IN CURRENT DIRECTORY
 
 	def checkInputValid(self,event): #eager to put it in frame class but need to separate the controller and frame
 
-		inputAge = self.subFrames["retrieveDataFrame"].ageVar.get()
+		inputAge = self.subFrames["retrieveDataFrame"].ageVar.get() #getting info from the view 
 		inputWeight = self.subFrames["retrieveDataFrame"].weightVar.get()
 		inputHeight = self.subFrames["retrieveDataFrame"].heightVar.get()
 		inputGoalWeight = self.subFrames["retrieveDataFrame"].goalWeightVar.get()
@@ -121,7 +158,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		passed = True
 
-		print(type(inputAge))
+		#makes sure input is valid
 		if(inputAge <= 0 or inputAge >=130):
 	
 			self.subFrames["retrieveDataFrame"].fieldInvalid(1)
@@ -154,8 +191,30 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 	
 		if(passed):
+
+			#update the model aka profile object
+			self.userProfile.age = inputAge
+			self.userProfile.currentWeight = inputWeight
+			self.userProfile.currentHeight = inputHeight
+			self.userProfile.goalWeight = inputGoalWeight
+			self.userProfile.actLvl = inputActLvl
+			self.userProfile.intensity = inputIntensity
+
+			#save and pickle it
+			pickle_Save = open(self.userProfile.name + ".pickle", "wb")
+			pickle.dump(self.userProfile, pickle_Save)
+			pickle_Save.close()
+
 			print("Success!!!")
-			#self.raiseWidget("SuccessCreate") this is where we initialize our profile
+
+			#go to mainMenu
+			self.raiseWidget("mainMenuFrame") 
+
+
+	def addDailyWeight(self,event):
+
+		#add clear method
+		self.raiseWidget("addDailyWeightFrame")
 
 
 runningApp = ProfileWindow()

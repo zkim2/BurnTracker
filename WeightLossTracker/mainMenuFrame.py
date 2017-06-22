@@ -15,7 +15,7 @@ class mainMenuFrame(tk.Frame):
 
 
 		self.addDailyWeightButton = tk.Button(self,text="Add daily weight")
-		self.addDailyWeightButton.bind("<Button-1>") #bind it to a function in controller
+		self.addDailyWeightButton.bind("<Button-1>",self.controller.addDailyWeight) #bind it to a function in controller
 		self.addDailyWeightButton.grid(row=1,column=0,sticky="nsew")
 
 		self.addDailyCaloriesButton = tk.Button(self,text="Add daily calories")

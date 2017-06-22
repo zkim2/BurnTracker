@@ -27,4 +27,4 @@ class mistypeCreateFrame(tk.Frame):
 
 		self.createProfileButton = tk.Button(self, text="Create a new profile")
 		self.createProfileButton.bind("<Button-1>", self.controller.infoInput)
-		self.createProfileButton.grid()
+		self.createProfileButton.grid(row=2,column=0)

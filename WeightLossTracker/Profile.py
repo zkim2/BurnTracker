@@ -42,53 +42,14 @@ class Profile:
 		self.weightData = {} #daily weight and date dictionary
 		self.caloricData = {} #daily calories and date dictionary
 		
-		
+		"""
 	def saveProfile(self): #broken for now
 
 		pickle_save = open(self.name + ".pickle", "wb")
 		pickle.dump(self, pickle_save)
 		pickle_save.close()
 	
-
-
-	def findProfile(self, name):
-
-
-		name = name.replace(' ' , '')
-
-		name = name.lower()
-
-		file_name = name.lower() + '.pickle'
-
-		cur_dir = os.getcwd()
-
-		inSystem = False
-
-		file_list = os.listdir(cur_dir)
-
-		for file in file_list:
-
-			if(file == file_name):
-
-				inSystem = True
-				break
-
-		if(inSystem == False):
-
-			return False
-
-		else:
-
-			return True
-
-
-	def loadProfile(self,name):
-
-		pickle_loadProfile = open(newName + ".pickle", "rb")
-
-		self = pickle.load(pickle_loadProfile)
-
-
+	"""
 
 	def calculateDailyCalories(self):
 
