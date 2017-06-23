@@ -2,11 +2,21 @@ import tkinter as tk
 import datetime
 import os
 import pickle
+
+
+#add all the frames...
 from mistypeCreateFrame import mistypeCreateFrame
 from startFrame import startFrame
 from retrieveDataFrame import retrieveDataFrame
 from mainMenuFrame import mainMenuFrame
 from addDailyWeightFrame import addDailyWeightFrame
+from addDailyCaloriesFrame import addDailyCaloriesFrame
+from visualizeProgressFrame import visualizeProgressFrame
+from profileUpdateFrame import profileUpdateFrame
+
+from calorieSubMenuFrame import calorieSubMenuFrame
+from modifyCalorieFrame import modifyCalorieFrame
+
 from Profile import Profile
 
 """
@@ -46,6 +56,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.setUpWidgets()
 
+		self.todaysDate = datetime.date.today() #in this class because an instance is created everytime the user logs in so the datetime will be updated.
 
 	def setUpWidgets(self):
 
@@ -58,12 +69,29 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		frameMenu = mainMenuFrame(self.mainFrame,self)
 
 		frameDailyWeight = addDailyWeightFrame(self.mainFrame,self)
+
+		frameDailyCalories = addDailyCaloriesFrame(self.mainFrame,self)
+
+		frameVisualize = visualizeProgressFrame(self.mainFrame,self)
+
+		frameUpdateInfo = profileUpdateFrame(self.mainFrame,self)
+
+		frameCalorieMenu = calorieSubMenuFrame(self.mainFrame,self)
+
+		frameCalorieModify = modifyCalorieFrame(self.mainFrame,self)
 		
 		self.subFrames[startFrame.__name__] = frameBegin
 		self.subFrames[mistypeCreateFrame.__name__] = frameOops
 		self.subFrames[retrieveDataFrame.__name__] = frameInfo
 		self.subFrames[mainMenuFrame.__name__] = frameMenu
 		self.subFrames[addDailyWeightFrame.__name__] = frameDailyWeight
+		self.subFrames[addDailyCaloriesFrame.__name__] = frameDailyCalories
+		self.subFrames[visualizeProgressFrame.__name__] = frameVisualize
+		self.subFrames[profileUpdateFrame.__name__] = frameUpdateInfo
+
+		self.subFrames[calorieSubMenuFrame.__name__] = frameCalorieMenu
+
+		self.subFrames[modifyCalorieFrame.__name__] = frameCalorieModify
 	
 		frameBegin.grid(row=0, column=0,sticky="nsew")
 
@@ -74,6 +102,16 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		frameMenu.grid(row=0,column=0,sticky="nsew")
 
 		frameDailyWeight.grid(row=0,column=0,sticky="nsew")
+
+		frameDailyCalories.grid(row=0,column=0,sticky="nsew")
+
+		frameVisualize.grid(row=0,column=0,sticky="nsew")
+
+		frameUpdateInfo.grid(row=0,column=0,sticky="nsew")
+
+		frameCalorieMenu.grid(row=0,column=0,sticky="nsew")
+
+		frameCalorieModify.grid(row=0,column=0,sticky="nsew")
 
 		self.raiseWidget("startFrame")
 		
@@ -87,7 +125,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 #THIS SECTION CONTROLS IF USER INPUTS A PROFILE THAT IS NOT IN THE CURRENT DIRECTORY
 	def checkProfileValid(self,event): 
 
-		#checks current directory to see if a profile is created under this user. was originally in the model but it's easier to load object in the controller
+		#checks current directory to see if a profile is created under this user. supposed to be in the model but it's easier to load object in the controller
 		#in the profile model i would be doing self = pickle.load() which doesn't work.
 
 		potentialProfileName = self.subFrames["startFrame"].loginEntry.get()
@@ -122,32 +160,39 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 			self.userProfile = pickle.load(pickle_inProfile) #previous object
 
-			print(self.userProfile.name)
 
 			self.raiseWidget("mainMenuFrame")
 
 	
 	def infoInput(self,event):
 
-			self.subFrames["retrieveDataFrame"].clearFrame() #always clear it before next input
-			self.raiseWidget("retrieveDataFrame")
+		self.subFrames["retrieveDataFrame"].clearFrame() #always clear it before next input
+		self.raiseWidget("retrieveDataFrame")
 
 	def backToStart(self,event):
 
-			self.subFrames["startFrame"].clearFrame()
-			self.raiseWidget("startFrame")
+		self.subFrames["startFrame"].clearFrame()
+		self.raiseWidget("startFrame")
 			
 	def backToProfileValid(self,event):
 
-			self.raiseWidget("mistypeCreateFrame")
+		self.raiseWidget("mistypeCreateFrame")
+
+	#show mainMenu if going back 
+
+	def backToMainMenu(self,event):
+
+		self.raiseWidget("mainMenuFrame")
 			
 	def exit(self,event):
 
-			exit()
+		exit()
 	
-#END OF PROFILE NOT IN CURRENT DIRECTORY
 
-	def checkInputValid(self,event): #eager to put it in frame class but need to separate the controller and frame
+
+	#submit on retrieveDataFrame checks the info.
+
+	def checkInputValid(self,event): 
 
 		inputAge = self.subFrames["retrieveDataFrame"].ageVar.get() #getting info from the view 
 		inputWeight = self.subFrames["retrieveDataFrame"].weightVar.get()
@@ -158,7 +203,8 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		passed = True
 
-		#makes sure input is valid
+		#makes sure input is valid before updating model
+
 		if(inputAge <= 0 or inputAge >=130):
 	
 			self.subFrames["retrieveDataFrame"].fieldInvalid(1)
@@ -211,11 +257,63 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 			self.raiseWidget("mainMenuFrame") 
 
 
+	#Main menu button actions
+
 	def addDailyWeight(self,event):
 
-		#add clear method
+		self.subFrames["addDailyWeightFrame"].clearFrame()
 		self.raiseWidget("addDailyWeightFrame")
 
+	def addDailyCalories(self,event):
+
+		self.subFrames["addDailyCaloriesFrame"].clearFrame()
+		self.raiseWidget("addDailyCaloriesFrame")
+
+	def visualizeProgress(self,event):
+
+		self.raiseWidget("visualizeProgressFrame")
+
+	def updateProfileInfo(self,event):
+
+		self.raiseWidget("profileUpdateFrame")
+
+
+	#profile update button actions
+
+
+	def sendToCalorieMenu(self,event):
+
+		self.raiseWidget("calorieSubMenuFrame")
+
+	def sendToModifyCalories(self,event):
+
+		self.subFrames["modifyCalorieFrame"].clearFrame()
+		self.raiseWidget("modifyCalorieFrame")
+
+	#addDaillyWeightFrame submit action which will update model.
+
+	def submitDailyWeight(self,event):
+
+		userDailyWeight = self.subFrames["addDailyWeightFrame"].weightVar.get()
+
+		self.userProfile.weightData[self.todaysDate] = userDailyWeight
+
+		#add feature that warns user about adding multiple entries on the same day.
+
+		self.subFrames["addDailyWeightFrame"].displaySuccess()
+
+
+	#addDaillyWeightFrame submit action which will update model.
+
+	def submitDailyCalories(self,event):
+
+		userDailyCalories = self.subFrames["addDailyCaloriesFrame"].caloriesVar.get()
+
+		self.userProfile.caloricData[self.todaysDate] = userDailyCalories
+
+		#add feature that warns user about adding multiple entries on the same day.
+		
+		self.subFrames["addDailyCaloriesFrame"].displaySuccess()
 
 runningApp = ProfileWindow()
 

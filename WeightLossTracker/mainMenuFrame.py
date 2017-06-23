@@ -19,15 +19,15 @@ class mainMenuFrame(tk.Frame):
 		self.addDailyWeightButton.grid(row=1,column=0,sticky="nsew")
 
 		self.addDailyCaloriesButton = tk.Button(self,text="Add daily calories")
-		self.addDailyCaloriesButton.bind("<Button-1>") #bind it to a function in controller
+		self.addDailyCaloriesButton.bind("<Button-1>", self.controller.addDailyCalories) #bind it to a function in controller
 		self.addDailyCaloriesButton.grid(row=1,column=1,sticky="nsew")
 
 		self.visualizeProgressButton = tk.Button(self,text="Visualize progress")
-		self.visualizeProgressButton.bind("<Button-1>") #bind it to a function in controller
+		self.visualizeProgressButton.bind("<Button-1>", self.controller.visualizeProgress) #bind it to a function in controller
 		self.visualizeProgressButton.grid(row=2,column=0,sticky="nsew")
 
 		self.updateProfileButton = tk.Button(self,text="Update your profile")
-		self.updateProfileButton.bind("<Button-1>") #bind it to a function in controller
+		self.updateProfileButton.bind("<Button-1>", self.controller.updateProfileInfo) #bind it to a function in controller
 		self.updateProfileButton.grid(row=2,column=1,sticky="nsew")
 
 		self.backToStartButton = tk.Button(self,text="Back")
