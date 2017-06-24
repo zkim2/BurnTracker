@@ -36,8 +36,12 @@ class modifyCalorieFrame(tk.Frame):
 
 
 		self.submitButton = tk.Button(self,text="Submit")
-		self.submitButton.bind("<Button-1>")
+		self.submitButton.bind("<Button-1>", self.controller.submitModifyCalories)
 		self.submitButton.grid(row=3,column=0,sticky="nsew")
+
+		self.quitButton = tk.Button(self,text="Quit")
+		self.quitButton.bind("<Button-1>", self.controller.exit)
+		self.quitButton.grid(row=3,column=1,sticky="nsew")
 
 
 	def clearFrame(self):
@@ -51,4 +55,6 @@ class modifyCalorieFrame(tk.Frame):
 	def displaySuccess(self):
 
 		self.success['text'] = "Success!!!"
+
+
 

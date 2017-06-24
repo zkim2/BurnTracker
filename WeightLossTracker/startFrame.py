@@ -30,7 +30,7 @@ class startFrame(tk.Frame):
 		self.loginEntry.grid(row=1,column=1,sticky="W")
 
 		self.submitButton = tk.Button(self, text="Submit")	
-		self.submitButton.bind("<Button-1>", self.controller.checkProfileValid)
+		self.submitButton.bind("<Button-1>", self.controller.submitProfileValid)
 		self.submitButton.grid(row=3, column=0)
 
 

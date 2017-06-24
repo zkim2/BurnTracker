@@ -60,7 +60,7 @@ class retrieveDataFrame(tk.Frame):
 		self.intensityEntry.grid(column=1,row=6,sticky="nsew")
 
 		self.submitButton = tk.Button(self, text="Submit")
-		self.submitButton.bind("<Button-1>", self.controller.checkInputValid)
+		self.submitButton.bind("<Button-1>", self.controller.submitInputValid)
 		self.submitButton.grid(column=0, row=7, sticky="nsew")
 
 		self.backButton = tk.Button(self, text="Back")
