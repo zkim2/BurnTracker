@@ -13,7 +13,7 @@ class calorieSubMenuFrame(tk.Frame):
 
 
 		self.deleteCalorieButton = tk.Button(self,text="Delete calories of a specific date")
-		self.deleteCalorieButton.bind("<Button-1>")
+		self.deleteCalorieButton.bind("<Button-1>", self.controller.sendToDeleteCalories)
 		self.deleteCalorieButton.grid(row=1,column=0,sticky="nsew")
 
 		self.modifyCalorieButton = tk.Button(self,text="Modify calories of a specific date")
@@ -21,3 +21,6 @@ class calorieSubMenuFrame(tk.Frame):
 		self.modifyCalorieButton.grid(row=1,column=1,sticky="nsew")
 
 
+		self.backButton = tk.Button(self,text="Back")
+		self.backButton.bind("<Button-1>", self.controller.updateProfileInfo)
+		self.backButton.grid(row=2,column=0,sticky="nsew")

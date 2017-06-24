@@ -16,6 +16,11 @@ from profileUpdateFrame import profileUpdateFrame
 
 from calorieSubMenuFrame import calorieSubMenuFrame
 from modifyCalorieFrame import modifyCalorieFrame
+from deleteCalorieFrame import deleteCalorieFrame
+
+from weightSubMenuFrame import weightSubMenuFrame
+from modifyWeightFrame import modifyWeightFrame
+from deleteWeightFrame import deleteWeightFrame
 
 from Profile import Profile
 
@@ -50,6 +55,8 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		#self.mainFrame.grid_columnconfigure(0, weight=1)
 		#self.mainFrame.grid_rowconfigure(0,weight=1)
 
+		#self.protocol("WM_DELETE_WINDOW", self.xButton)
+
 		self.mainFrame.grid(row=0, column=0, sticky="nsew")
 
 		self.subFrames = {}
@@ -80,6 +87,14 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		frameCalorieModify = modifyCalorieFrame(self.mainFrame,self)
 		
+		frameCalorieDelete = deleteCalorieFrame(self.mainFrame, self)
+
+		frameWeightMenu = weightSubMenuFrame(self.mainFrame,self)
+
+		frameWeightModify = modifyWeightFrame(self.mainFrame,self)
+
+		frameWeightDelete = deleteWeightFrame(self.mainFrame, self)
+
 		self.subFrames[startFrame.__name__] = frameBegin
 		self.subFrames[mistypeCreateFrame.__name__] = frameOops
 		self.subFrames[retrieveDataFrame.__name__] = frameInfo
@@ -92,6 +107,14 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.subFrames[calorieSubMenuFrame.__name__] = frameCalorieMenu
 
 		self.subFrames[modifyCalorieFrame.__name__] = frameCalorieModify
+
+		self.subFrames[deleteCalorieFrame.__name__] = frameCalorieDelete
+
+		self.subFrames[weightSubMenuFrame.__name__] = frameWeightMenu
+
+		self.subFrames[modifyWeightFrame.__name__] = frameWeightModify
+
+		self.subFrames[deleteWeightFrame.__name__] = frameWeightDelete
 	
 		frameBegin.grid(row=0, column=0,sticky="nsew")
 
@@ -113,6 +136,14 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		frameCalorieModify.grid(row=0,column=0,sticky="nsew")
 
+		frameCalorieDelete.grid(row=0, column=0, sticky="nsew")
+
+		frameWeightMenu.grid(row=0,column=0,sticky="nsew")
+
+		frameWeightModify.grid(row=0,column=0,sticky="nsew")
+
+		frameWeightDelete.grid(row=0,column=0,sticky="nsew")
+
 		self.raiseWidget("startFrame")
 		
 		
@@ -120,7 +151,16 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.subFrames[name].tkraise()
 		
+		"""
+	def xButton(self): #different from exit() function because this isn't the result of a button press.
 
+		pickle_Save = open(self.userProfile.name + ".pickle", "wb")
+		pickle.dump(self.userProfile, pickle_Save)
+		pickle_Save.close()
+
+		#add saveFeature
+		exit()
+		"""
 
 	#THIS SECTION CONTROLS IF USER INPUTS A PROFILE THAT IS NOT IN THE CURRENT DIRECTORY
 	def submitProfileValid(self,event): 
@@ -284,16 +324,37 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.raiseWidget("profileUpdateFrame")
 
 
+
 	#profile update button actions
 
 	def sendToCalorieMenu(self,event):
 
 		self.raiseWidget("calorieSubMenuFrame")
 
+	#calorie submenu button actions
 	def sendToModifyCalories(self,event):
 
 		self.subFrames["modifyCalorieFrame"].clearFrame()
 		self.raiseWidget("modifyCalorieFrame")
+
+	def sendToDeleteCalories(self,event):
+
+		self.subFrames["deleteCalorieFrame"].clearFrame()
+		self.raiseWidget("deleteCalorieFrame")
+
+	def sendToWeightMenu(self,event):
+
+		self.raiseWidget("weightSubMenuFrame")
+
+	def sendToModifyWeight(self,event):
+
+		self.subFrames["modifyWeightFrame"].clearFrame()
+		self.raiseWidget("modifyWeightFrame")
+
+	def sendToDeleteWeight(self,event):
+
+		self.subFrames["deleteWeightFrame"].clearFrame()
+		self.raiseWidget("deleteWeightFrame")
 
 	#addDaillyWeightFrame submit action which will update model.
 
@@ -335,7 +396,43 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.subFrames["modifyCalorieFrame"].displaySuccess()
 
+	def submitDeleteCalories(self,event):
+
+		dateToDelete = self.subFrames["deleteCalorieFrame"].dateString.get()
+
+		dateToDelete = datetime.datetime.strptime(dateToDelete, '%m/%d/%y')
+
+		self.userProfile.caloricData.pop(dateToDelete, None) 
+
+		self.subFrames["deleteCalorieFrame"].displaySuccess()
+
+	def submitModifyWeight(self,event):
+
+		dateOfWeight = self.subFrames["modifyWeightFrame"].dateString.get()
+
+		dateOfWeight = datetime.datetime.strptime(dateOfWeight, '%m/%d/%y')
+
+		weightToChange = self.subFrames["modifyWeightFrame"].weightVar.get()
+
+		self.userProfile.weightData[dateOfWeight] = weightToChange
+
+		#print(self.userProfile.weightData)
+		#print(self.userProfile.caloricData)
+
+		self.subFrames["modifyWeightFrame"].displaySuccess()
+
+	def submitDeleteWeight(self,event):
+
+		dateToDelete = self.subFrames["deleteWeightFrame"].dateString.get()
+
+		dateToDelete = datetime.datetime.strptime(dateToDelete, '%m/%d/%y')
+
+		self.userProfile.weightData.pop(dateToDelete, None) 
+
+		self.subFrames["deleteWeightFrame"].displaySuccess()
+
 
 runningApp = ProfileWindow()
+
 
 runningApp.mainloop()

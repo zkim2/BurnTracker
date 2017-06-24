@@ -18,7 +18,7 @@ class profileUpdateFrame(tk.Frame):
 		self.updateCaloriesButton.grid(row=1,column=0,sticky="nsew")
 
 		self.updateWeightButton = tk.Button(self, text="Weight")
-		self.updateWeightButton.bind("<Button-1>")
+		self.updateWeightButton.bind("<Button-1>",self.controller.sendToWeightMenu)
 		self.updateWeightButton.grid(row=1,column=1,sticky="nsew")
 
 		self.updateActLvlButton = tk.Button(self,text="Activity Level")
@@ -29,3 +29,7 @@ class profileUpdateFrame(tk.Frame):
 		self.updateDeficitButton = tk.Button(self,text="Caloric Deficit")
 		self.updateDeficitButton.bind("<Button-1>")
 		self.updateDeficitButton.grid(row=2,column=1,sticky="nsew")
+
+		self.backButton = tk.Button(self,text="Back")
+		self.backButton.bind("<Button-1>", self.controller.backToMainMenu)
+		self.backButton.grid(row=3,column=0,sticky="nsew")

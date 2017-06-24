@@ -39,9 +39,13 @@ class modifyCalorieFrame(tk.Frame):
 		self.submitButton.bind("<Button-1>", self.controller.submitModifyCalories)
 		self.submitButton.grid(row=3,column=0,sticky="nsew")
 
+		self.backButton = tk.Button(self,text="Back")
+		self.backButton.bind("<Button-1>", self.controller.sendToCalorieMenu)
+		self.backButton.grid(row=3,column=1,sticky="nsew")
+
 		self.quitButton = tk.Button(self,text="Quit")
 		self.quitButton.bind("<Button-1>", self.controller.exit)
-		self.quitButton.grid(row=3,column=1,sticky="nsew")
+		self.quitButton.grid(row=3,column=2,sticky="nsew")
 
 
 	def clearFrame(self):
