@@ -13,11 +13,22 @@ class modifyCalorieFrame(tk.Frame):
 
 		self.calorieVar = tk.DoubleVar()
 
-		self.modifyingCalorieLabel = tk.Label(self,text="Modifying Calories")
-		self.modifyingCalorieLabel.grid(row=0,column=0, sticky="nsew")
+
+		self.grid_columnconfigure(0,weight=1)
+		self.grid_columnconfigure(1,weight=1)
+		self.grid_columnconfigure(2,weight=1)
+
+		self.grid_rowconfigure(0,weight=1)
+		self.grid_rowconfigure(1,weight=1)
+		self.grid_rowconfigure(2,weight=1)
+		self.grid_rowconfigure(3,weight=1)
+		self.grid_rowconfigure(4,weight=1)
+
+		self.modifyingCalorieLabel = tk.Label(self,text="Modifying Calories", font=("Helvetica", 20))
+		self.modifyingCalorieLabel.grid(row=0,column=1, sticky="nsew")
 
 		self.success = tk.Label(self,text="")
-		self.success.grid(row=0,column=1,sticky="nsew")
+		self.success.grid(row=0,column=2,sticky="nsew")
 
 
 		self.dateOfCalories = tk.Label(self,text="Date to modify(MM/DD/YY):")
@@ -37,15 +48,13 @@ class modifyCalorieFrame(tk.Frame):
 
 		self.submitButton = tk.Button(self,text="Submit")
 		self.submitButton.bind("<Button-1>", self.controller.submitModifyCalories)
-		self.submitButton.grid(row=3,column=0,sticky="nsew")
+		self.submitButton.grid(row=3,column=1,sticky="nsew")
 
 		self.backButton = tk.Button(self,text="Back")
 		self.backButton.bind("<Button-1>", self.controller.sendToCalorieMenu)
-		self.backButton.grid(row=3,column=1,sticky="nsew")
+		self.backButton.grid(row=4,column=1,sticky="nsew")
 
-		self.quitButton = tk.Button(self,text="Quit")
-		self.quitButton.bind("<Button-1>", self.controller.exit)
-		self.quitButton.grid(row=3,column=2,sticky="nsew")
+		
 
 
 	def clearFrame(self):
@@ -59,6 +68,7 @@ class modifyCalorieFrame(tk.Frame):
 	def displaySuccess(self):
 
 		self.success['text'] = "Success!!!"
+		self.success['fg'] = "blue"
 
 
 

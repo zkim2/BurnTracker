@@ -8,19 +8,29 @@ class calorieSubMenuFrame(tk.Frame):
 
 		self.controller = controller
 
-		self.whatToChangeLabel = tk.Label(self, text="What do you want to do with your caloric data?")
-		self.whatToChangeLabel.grid(row=0,column=0,sticky="nsew")
+		self.grid_columnconfigure(0,weight=1)
+		self.grid_columnconfigure(1,weight=1)
+		self.grid_columnconfigure(2,weight=1)
+
+		self.grid_rowconfigure(0,weight=1)
+		self.grid_rowconfigure(1,weight=1)
+		self.grid_rowconfigure(2,weight=1)
+		self.grid_rowconfigure(3,weight=1)
+
+
+		self.whatToChangeLabel = tk.Label(self, text="What do you want to do with your caloric data?", font=("Helvetica",20))
+		self.whatToChangeLabel.grid(row=0,column=1,sticky="nsew")
 
 
 		self.deleteCalorieButton = tk.Button(self,text="Delete calories of a specific date")
 		self.deleteCalorieButton.bind("<Button-1>", self.controller.sendToDeleteCalories)
-		self.deleteCalorieButton.grid(row=1,column=0,sticky="nsew")
+		self.deleteCalorieButton.grid(row=1,column=1,sticky="nsew")
 
 		self.modifyCalorieButton = tk.Button(self,text="Modify calories of a specific date")
 		self.modifyCalorieButton.bind("<Button-1>", self.controller.sendToModifyCalories)
-		self.modifyCalorieButton.grid(row=1,column=1,sticky="nsew")
+		self.modifyCalorieButton.grid(row=2,column=1,sticky="nsew")
 
 
 		self.backButton = tk.Button(self,text="Back")
 		self.backButton.bind("<Button-1>", self.controller.updateProfileInfo)
-		self.backButton.grid(row=2,column=0,sticky="nsew")
+		self.backButton.grid(row=3,column=1,sticky="nsew")

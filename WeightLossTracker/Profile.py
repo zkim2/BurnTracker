@@ -79,3 +79,4 @@ class Profile:
 		totalPoundDeficit = poundsLose * 3500
 
 		self.weeksToFinish= int(totalPoundDeficit / (7 * self.intensity))
+

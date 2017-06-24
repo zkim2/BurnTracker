@@ -2,6 +2,9 @@ import tkinter as tk
 import datetime
 import os
 import pickle
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
 
 
 #add all the frames...
@@ -22,6 +25,8 @@ from weightSubMenuFrame import weightSubMenuFrame
 from modifyWeightFrame import modifyWeightFrame
 from deleteWeightFrame import deleteWeightFrame
 
+from modifyActivityLvlFrame import modifyActivityLvlFrame
+from modifyCaloricDeficitFrame import modifyCaloricDeficitFrame
 from Profile import Profile
 
 """
@@ -49,15 +54,19 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		tk.Tk.__init__(self, *args, **kwargs)
 
-		#self.geometry("500x500+300+300")
 		self.mainFrame = tk.Frame(self) #all other frames will have this as the parent.
 
-		#self.mainFrame.grid_columnconfigure(0, weight=1)
-		#self.mainFrame.grid_rowconfigure(0,weight=1)
+		self.geometry("+500+300")
+		self.title("TrackThat")
+		#not necessary there is only 1 row and 1 column being filled anyway.
+		self.mainFrame.grid_columnconfigure(0, weight=1)
+		self.mainFrame.grid_rowconfigure(0, weight=1)
+		
 
 		#self.protocol("WM_DELETE_WINDOW", self.xButton)
 
-		self.mainFrame.grid(row=0, column=0, sticky="nsew")
+
+		self.mainFrame.grid(row=0,column=0,sticky="nsew")
 
 		self.subFrames = {}
 
@@ -67,83 +76,22 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 	def setUpWidgets(self):
 
-		frameBegin = startFrame(self.mainFrame, self)
-		
-		frameOops = mistypeCreateFrame(self.mainFrame, self)
+		for eachFrame in (startFrame, mistypeCreateFrame, retrieveDataFrame, mainMenuFrame, addDailyWeightFrame, addDailyCaloriesFrame, visualizeProgressFrame, profileUpdateFrame, calorieSubMenuFrame, modifyCalorieFrame,deleteCalorieFrame, weightSubMenuFrame, modifyWeightFrame, deleteWeightFrame, modifyActivityLvlFrame, modifyCaloricDeficitFrame):
 
-		frameInfo = retrieveDataFrame(self.mainFrame,self)
+			currentFrame = eachFrame(self.mainFrame, self)
 
-		frameMenu = mainMenuFrame(self.mainFrame,self)
+			self.subFrames[eachFrame.__name__] = currentFrame
 
-		frameDailyWeight = addDailyWeightFrame(self.mainFrame,self)
+			currentFrame.grid(row=0,column=0,sticky="nsew") 
 
-		frameDailyCalories = addDailyCaloriesFrame(self.mainFrame,self)
-
-		frameVisualize = visualizeProgressFrame(self.mainFrame,self)
-
-		frameUpdateInfo = profileUpdateFrame(self.mainFrame,self)
-
-		frameCalorieMenu = calorieSubMenuFrame(self.mainFrame,self)
-
-		frameCalorieModify = modifyCalorieFrame(self.mainFrame,self)
-		
-		frameCalorieDelete = deleteCalorieFrame(self.mainFrame, self)
-
-		frameWeightMenu = weightSubMenuFrame(self.mainFrame,self)
-
-		frameWeightModify = modifyWeightFrame(self.mainFrame,self)
-
-		frameWeightDelete = deleteWeightFrame(self.mainFrame, self)
-
-		self.subFrames[startFrame.__name__] = frameBegin
-		self.subFrames[mistypeCreateFrame.__name__] = frameOops
-		self.subFrames[retrieveDataFrame.__name__] = frameInfo
-		self.subFrames[mainMenuFrame.__name__] = frameMenu
-		self.subFrames[addDailyWeightFrame.__name__] = frameDailyWeight
-		self.subFrames[addDailyCaloriesFrame.__name__] = frameDailyCalories
-		self.subFrames[visualizeProgressFrame.__name__] = frameVisualize
-		self.subFrames[profileUpdateFrame.__name__] = frameUpdateInfo
-
-		self.subFrames[calorieSubMenuFrame.__name__] = frameCalorieMenu
-
-		self.subFrames[modifyCalorieFrame.__name__] = frameCalorieModify
-
-		self.subFrames[deleteCalorieFrame.__name__] = frameCalorieDelete
-
-		self.subFrames[weightSubMenuFrame.__name__] = frameWeightMenu
-
-		self.subFrames[modifyWeightFrame.__name__] = frameWeightModify
-
-		self.subFrames[deleteWeightFrame.__name__] = frameWeightDelete
+			"""
+			IMPORTANT NOTE: sticky="nsew" does center frame however in this case we are putting ALL frames on a single mainframe and so all frames are as wide as the biggest one.
+			 SO, the frames appear to be not centered because their widths are stretched. removing the bigger frames results in the frame being correctly centered. 
 	
-		frameBegin.grid(row=0, column=0,sticky="nsew")
+			To overcome this, we will use grid_columnconfigure and grid_rowconfigure on each frame to ensure a centered layout.
 
-		frameOops.grid(row=0, column=0,sticky="nsew")
-
-		frameInfo.grid(row=0,column=0,sticky="nsew")
-
-		frameMenu.grid(row=0,column=0,sticky="nsew")
-
-		frameDailyWeight.grid(row=0,column=0,sticky="nsew")
-
-		frameDailyCalories.grid(row=0,column=0,sticky="nsew")
-
-		frameVisualize.grid(row=0,column=0,sticky="nsew")
-
-		frameUpdateInfo.grid(row=0,column=0,sticky="nsew")
-
-		frameCalorieMenu.grid(row=0,column=0,sticky="nsew")
-
-		frameCalorieModify.grid(row=0,column=0,sticky="nsew")
-
-		frameCalorieDelete.grid(row=0, column=0, sticky="nsew")
-
-		frameWeightMenu.grid(row=0,column=0,sticky="nsew")
-
-		frameWeightModify.grid(row=0,column=0,sticky="nsew")
-
-		frameWeightDelete.grid(row=0,column=0,sticky="nsew")
-
+			"""
+		
 		self.raiseWidget("startFrame")
 		
 		
@@ -297,7 +245,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 			pickle.dump(self.userProfile, pickle_Save)
 			pickle_Save.close()
 
-			print("Success!!!")
+		
 
 			#go to mainMenu
 			self.raiseWidget("mainMenuFrame") 
@@ -356,6 +304,17 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.subFrames["deleteWeightFrame"].clearFrame()
 		self.raiseWidget("deleteWeightFrame")
 
+
+	def sendToModifyActLvl(self,event):
+
+		self.subFrames["modifyActivityLvlFrame"].clearFrame()
+		self.raiseWidget("modifyActivityLvlFrame")
+
+
+	def sendToModifyIntensity(self,event):
+
+		self.subFrames["modifyCaloricDeficitFrame"].clearFrame()
+		self.raiseWidget("modifyCaloricDeficitFrame")
 	#addDaillyWeightFrame submit action which will update model.
 
 	def submitDailyWeight(self,event):
@@ -392,7 +351,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.userProfile.caloricData[dateOfCalories] = caloriesToChange
 
-		print(self.userProfile.caloricData)
+		#print(self.userProfile.caloricData)
 
 		self.subFrames["modifyCalorieFrame"].displaySuccess()
 
@@ -430,6 +389,52 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.userProfile.weightData.pop(dateToDelete, None) 
 
 		self.subFrames["deleteWeightFrame"].displaySuccess()
+
+
+	def submitModifyActLvl(self,event):
+
+		newActLvl = self.subFrames["modifyActivityLvlFrame"].actLvlVar.get()
+
+		self.userProfile.actLvl = newActLvl
+
+		self.subFrames["modifyActivityLvlFrame"].displaySuccess()
+
+	def submitModifyIntensity(self,event):
+
+		newIntensity = self.subFrames["modifyCaloricDeficitFrame"].intensityVar.get()
+
+		self.userProfile.intensity = newIntensity
+
+		self.subFrames["modifyCaloricDeficitFrame"].displaySuccess()	
+
+
+	def graphWeightLoss(self,event):
+
+		sortedData = sorted(self.userProfile.weightData.items(), key = lambda d: d[0])
+
+		
+		plt.suptitle('Weight Loss Progress for ' + self.userProfile.name + ' as of ' + self.todaysDate.strftime("%m/%d/%y"), fontsize=14, fontweight='bold')
+		"""
+		#x are the keys(dateTime objects) and y are the weights
+		x,y = zip(*sortedData)
+		plt.plot(x,y)
+		plt.ylabel('Weight (lbs)')
+		plt.xlabel('Time (days)')
+	"""
+		plt.show()
+		
+
+	def graphCalories(self,event):
+
+		sortedData = sorted(self.userProfile.caloricData.items(), key = lambda d: d[0])
+
+		plt.suptitle('Calories over time for ' + self.userProfile.name + ' as of' + self.todaysDate.strftime("%m/%d/%y"), fontsize=14, fontweight='bold')
+
+		x,y = zip(*sortedData)
+		plt.plot(x,y)
+		plt.ylabel('Calories')
+		plt.xlabel('Time (days)')
+		plt.show()
 
 
 runningApp = ProfileWindow()

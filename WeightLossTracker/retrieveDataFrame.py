@@ -8,6 +8,24 @@ class retrieveDataFrame(tk.Frame):
 		tk.Frame.__init__(self,parent)
 		self.controller = controller
 
+
+
+		self.grid_columnconfigure(0,weight=1)
+		self.grid_columnconfigure(1,weight=1)
+		
+
+
+		self.grid_rowconfigure(0,weight=1)
+		self.grid_rowconfigure(1,weight=1)
+		self.grid_rowconfigure(2,weight=1)
+		self.grid_rowconfigure(3,weight=1)
+		self.grid_rowconfigure(4,weight=1)
+		self.grid_rowconfigure(5,weight=1)
+		self.grid_rowconfigure(6,weight=1)
+		self.grid_rowconfigure(7,weight=1)
+
+
+
 		self.ageVar = tk.IntVar()
 		self.weightVar = tk.DoubleVar()
 		self.heightVar = tk.DoubleVar()
@@ -16,10 +34,10 @@ class retrieveDataFrame(tk.Frame):
 		self.intensityVar = tk.IntVar()
 
 		self.title = tk.Label(self, text="Creating new profile: ")
-		self.title.grid(column=0,row=0,sticky="nsew")
+		self.title.grid(column=1,row=0,sticky="nsew")
 
 		self.invalidInputLabel = tk.Label(self, text="")
-		self.invalidInputLabel.grid(column=1,row=0,sticky="nsew")
+		self.invalidInputLabel.grid(column=0,row=0,sticky="nsew")
 
 		self.askAge = tk.Label(self,text="Age:")
 		self.askAge.grid(column=0,row=1,sticky="nsew")
@@ -70,6 +88,7 @@ class retrieveDataFrame(tk.Frame):
 	def fieldInvalid(self, number):
 
 		self.invalidInputLabel['text'] = "One of the fields is invalid (**)"
+		self.invalidInputLabel['fg'] = "red"
 
 		if(number == 1):
 			self.askAge['text'] = "Age: **"
