@@ -13,7 +13,7 @@ class modifyCalorieFrame(tk.Frame):
 
 		self.calorieVar = tk.DoubleVar()
 
-
+		print("hi")
 		self.grid_columnconfigure(0,weight=1)
 		self.grid_columnconfigure(1,weight=1)
 		self.grid_columnconfigure(2,weight=1)
