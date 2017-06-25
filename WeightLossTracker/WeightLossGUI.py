@@ -57,7 +57,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.mainFrame = tk.Frame(self,width=800,height=500) #all other frames will have this as the parent.
 
 		self.geometry("800x500+500+300")
-		self.title("TrackThat")
+		self.title("BurnTracker")
 		#not necessary there is only 1 row and 1 column being filled anyway.
 		self.mainFrame.grid_columnconfigure(0, weight=1)
 		self.mainFrame.grid_rowconfigure(0, weight=1)

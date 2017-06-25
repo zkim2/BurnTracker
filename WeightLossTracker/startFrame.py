@@ -32,7 +32,7 @@ class startFrame(tk.Frame):
 		self.nameVar = tk.StringVar()
 
 
-		self.welcomeLabel = tk.Label(self, text="TrackThat", font=("Helvectica",25))
+		self.welcomeLabel = tk.Label(self, text="BurnTracker", font=("Helvectica",25))
 		self.welcomeLabel.grid(row=0,column=1,sticky="nsew")
 
 		self.nameEmpty = tk.Label(self,text="", font=("Helvetica",15))
