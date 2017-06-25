@@ -23,7 +23,8 @@ class startFrame(tk.Frame):
 		
 		self.grid_rowconfigure(0, weight=1)
 		self.grid_rowconfigure(1, weight=0)
-		self.grid_rowconfigure(2, weight=1)
+		self.grid_rowconfigure(2, weight=0)
+		self.grid_rowconfigure(3, weight=1)
 		
 
 		self.controller = controller
@@ -34,19 +35,31 @@ class startFrame(tk.Frame):
 		self.welcomeLabel = tk.Label(self, text="TrackThat", font=("Helvectica",25))
 		self.welcomeLabel.grid(row=0,column=1,sticky="nsew")
 
+		self.nameEmpty = tk.Label(self,text="", font=("Helvetica",15))
+		self.nameEmpty.grid(row=1, column=1, sticky="nsew")
 		
 		self.loginLabel = tk.Label(self,text="Profile Name:", font=("Helvectica",20))
-		self.loginLabel.grid(row=1,column=0,sticky="nsew")
+		self.loginLabel.grid(row=2,column=0,sticky="nsew")
 
 		
-		self.loginEntry = tk.Entry(self,textvariable=self.nameVar)
-		self.loginEntry.grid(row=1,column=1,sticky="nsew")
+		self.loginEntry = tk.Entry(self,textvariable=self.nameVar, font=("Helvetica", 20))
+		self.loginEntry.grid(row=2,column=1,sticky="nsew")
 
-		self.submitButton = tk.Button(self, text="Submit", width=10)	
+		self.submitButton = tk.Button(self, text="Submit",font = ("Helvetica", 15))	
 		self.submitButton.bind("<Button-1>", self.controller.submitProfileValid)
-		self.submitButton.grid(row=2,column=1,sticky="nsew")
+		#self.submitButton.focus_set()
+
+		self.submitButton.grid(row=3,column=1)
 
 
 	def clearFrame(self):
 
 		self.nameVar.set("")
+		self.nameEmpty['text'] = ""
+
+
+	def fieldInvalid(self):
+
+		self.nameEmpty['text'] = "No name entered **"
+		self.nameEmpty['fg'] = "red"
+

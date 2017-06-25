@@ -31,10 +31,10 @@ class mistypeCreateFrame(tk.Frame):
 		self.noProfileLabel = tk.Label(self, text="Uh-oh, no profile found.", font=("Helvectica",25))
 		self.noProfileLabel.grid(row=0,column=1)
 
-		self.retypeButton = tk.Button(self, text="Retype profile name",width=15)
+		self.retypeButton = tk.Button(self, text="Retype profile name",width=20 ,font = ("Helvetica", 20))
 		self.retypeButton.bind("<Button-1>",self.controller.backToStart)
 		self.retypeButton.grid(row=1,column=1)
 
-		self.createProfileButton = tk.Button(self, text="Create a new profile", width=15)
+		self.createProfileButton = tk.Button(self, text="Create a new profile", width=20,font = ("Helvetica", 20))
 		self.createProfileButton.bind("<Button-1>", self.controller.infoInput)
 		self.createProfileButton.grid(row=2,column=1)

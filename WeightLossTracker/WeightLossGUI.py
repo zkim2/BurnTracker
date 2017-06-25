@@ -54,17 +54,16 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		tk.Tk.__init__(self, *args, **kwargs)
 
-		self.mainFrame = tk.Frame(self) #all other frames will have this as the parent.
+		self.mainFrame = tk.Frame(self,width=800,height=500) #all other frames will have this as the parent.
 
-		self.geometry("+500+300")
+		self.geometry("800x500+500+300")
 		self.title("TrackThat")
 		#not necessary there is only 1 row and 1 column being filled anyway.
 		self.mainFrame.grid_columnconfigure(0, weight=1)
 		self.mainFrame.grid_rowconfigure(0, weight=1)
 		
-
+		self.mainFrame.grid_propagate(False) #frames resize to mainFrame
 		#self.protocol("WM_DELETE_WINDOW", self.xButton)
-
 
 		self.mainFrame.grid(row=0,column=0,sticky="nsew")
 
@@ -88,8 +87,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 			IMPORTANT NOTE: sticky="nsew" does center frame however in this case we are putting ALL frames on a single mainframe and so all frames are as wide as the biggest one.
 			 SO, the frames appear to be not centered because their widths are stretched. removing the bigger frames results in the frame being correctly centered. 
 	
-			To overcome this, we will use grid_columnconfigure and grid_rowconfigure on each frame to ensure a centered layout.
-
+			To overcome this, we will use grid_columnconfigure and grid_rowconfigure on each frame to ensure a centered layout AND have each frame be of set width and height.
 			"""
 		
 		self.raiseWidget("startFrame")
@@ -122,34 +120,40 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		potentialProfileName= potentialProfileName.lower()
 
-		file_name = potentialProfileName + '.pickle'
+		if(len(potentialProfileName) == 0):
 
-		cur_dir = os.getcwd()
-
-		inSystem = False
-
-		file_list = os.listdir(cur_dir)
-
-		for file in file_list:
-
-			if(file == file_name):
-
-				inSystem = True
-				break
-
-		if(inSystem == False):
-
-			self.userProfile = Profile(name=potentialProfileName) #normal constructor
-			self.raiseWidget("mistypeCreateFrame")
+			self.subFrames["startFrame"].fieldInvalid()
 
 		else:
-			
-			pickle_inProfile = open(potentialProfileName + ".pickle", "rb")
 
-			self.userProfile = pickle.load(pickle_inProfile) #previous object
+			file_name = potentialProfileName + '.pickle'
+
+			cur_dir = os.getcwd()
+
+			inSystem = False
+
+			file_list = os.listdir(cur_dir)
+
+			for file in file_list:
+
+				if(file == file_name):
+
+					inSystem = True
+					break
+
+			if(inSystem == False):
+
+				self.userProfile = Profile(name=potentialProfileName) #normal constructor
+				self.raiseWidget("mistypeCreateFrame")
+
+			else:
+				
+				pickle_inProfile = open(potentialProfileName + ".pickle", "rb")
+
+				self.userProfile = pickle.load(pickle_inProfile) #previous object
 
 
-			self.raiseWidget("mainMenuFrame")
+				self.raiseWidget("mainMenuFrame")
 
 	
 	#this button sends to the frame that gets user data
@@ -321,11 +325,15 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		userDailyWeight = self.subFrames["addDailyWeightFrame"].weightVar.get()
 
-		self.userProfile.weightData[self.todaysDate] = userDailyWeight
+		if(userDailyWeight >= 90):
+			self.userProfile.weightData[self.todaysDate] = userDailyWeight
+			self.subFrames["addDailyWeightFrame"].displaySuccess()
 
+		else:
+			self.subFrames["addDailyWeightFrame"].fieldInvalid()
 		#add feature that warns user about adding multiple entries on the same day.
 
-		self.subFrames["addDailyWeightFrame"].displaySuccess()
+		
 
 
 	#addDailyWeightFrame submit action which will update model.
@@ -334,11 +342,18 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		userDailyCalories = self.subFrames["addDailyCaloriesFrame"].caloriesVar.get()
 
-		self.userProfile.caloricData[self.todaysDate] = userDailyCalories
+		if(userDailyCalories >= 1000):
+
+			self.userProfile.caloricData[self.todaysDate] = userDailyCalories
+			self.subFrames["addDailyCaloriesFrame"].displaySuccess()
+
+		else:
+
+			self.subFrames["addDailyCaloriesFrame"].fieldInvalid()
 
 		#add feature that warns user about adding multiple entries on the same day.
 		
-		self.subFrames["addDailyCaloriesFrame"].displaySuccess()
+		
 
 
 	def submitModifyCalories(self,event):
