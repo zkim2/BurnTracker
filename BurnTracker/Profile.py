@@ -25,11 +25,12 @@ To do:
 
 class Profile:
 
-	def __init__(self, name="", age=0, currentWeight=0, currentHeight=0, goalWeight=0, actLvl=1, intensity=1):
+	def __init__(self, name="", age=0, startWeight= 0,currentWeight=0, currentHeight=0, goalWeight=0, actLvl=1, intensity=1):
 
 		
 		self.name = name
 		self.age = age
+		self.startWeight = startWeight
 		self.currentWeight = currentWeight
 		self.currentHeight = currentHeight
 		self.goalWeight = goalWeight
@@ -51,7 +52,7 @@ class Profile:
 	
 	"""
 
-	def calculateDailyCalories(self):
+	def calculateDailySummary(self):
 
 		inactiveBMR = 66.0 + (6.23 * self.currentWeight) + (12.7 * self.currentHeight) - (6.8 * self.age)
 
@@ -71,7 +72,7 @@ class Profile:
 			activeBMR = inactiveBMR * 1.9
 
 
-		self.BMRmaintenance = activeBMR
+		self.BMRmaintenance = int(activeBMR)
 		self.dailyCalories = int(self.BMRmaintenance - self.intensity)
 
 		poundsLose = self.currentWeight - self.goalWeight

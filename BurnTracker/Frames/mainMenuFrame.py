@@ -45,7 +45,7 @@ class mainMenuFrame(tk.Frame):
 		self.updateProfileButton.grid(row=4,column=1)
 
 		self.backToStartButton = tk.Button(self,text="Back",font = ("Helvetica", 15),width=20)
-		self.backToStartButton.bind("<Button-1>", self.controller.backToStart)
+		self.backToStartButton.bind("<Button-1>", self.controller.backToSummary)
 		self.backToStartButton.grid(row=5,column=1)
 
 		self.quitButton = tk.Button(self,text="Quit",font = ("Helvetica", 15),width=20)

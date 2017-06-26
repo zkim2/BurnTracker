@@ -46,21 +46,21 @@ class retrieveDataFrame(tk.Frame):
 		self.ageEntry = tk.Entry(self, textvariable=self.ageVar,font = ("Helvetica", 20))
 		self.ageEntry.grid(column=1,row=2,sticky="nsew")
 
-		self.askWeight = tk.Label(self,text="Weight:",font = ("Helvetica", 20))
+		self.askWeight = tk.Label(self,text="Weight(lbs):",font = ("Helvetica", 20))
 		self.askWeight.grid(column=0,row=3,sticky="nsew")
 
 		self.weightEntry = tk.Entry(self, textvariable=self.weightVar,font = ("Helvetica", 20))
 		self.weightEntry.grid(column=1,row=3,sticky="nsew")
 
 
-		self.askHeight = tk.Label(self,text="Height:",font = ("Helvetica", 20))
+		self.askHeight = tk.Label(self,text="Height(inches):",font = ("Helvetica", 20))
 		self.askHeight.grid(column=0,row=4,sticky="nsew")
 
 		self.heightEntry = tk.Entry(self, textvariable=self.heightVar, font = ("Helvetica", 20))
 		self.heightEntry.grid(column=1,row=4,sticky="nsew")
 
 
-		self.askGoalWeight = tk.Label(self,text="Goal Weight:" ,font = ("Helvetica", 20))
+		self.askGoalWeight = tk.Label(self,text="Goal Weight(lbs):" ,font = ("Helvetica", 20))
 		self.askGoalWeight.grid(column=0,row=5,sticky="nsew")
 
 		self.goalWeightEntry = tk.Entry(self, textvariable=self.goalWeightVar,font = ("Helvetica", 20))
@@ -88,7 +88,7 @@ class retrieveDataFrame(tk.Frame):
 
 	def fieldInvalid(self, number):
 
-		self.invalidInputLabel['text'] = "One of the fields is invalid (**)"
+		self.invalidInputLabel['text'] = "One of the fields is invalid in size **"
 		self.invalidInputLabel['fg'] = "red"
 
 		if(number == 1):
@@ -114,6 +114,12 @@ class retrieveDataFrame(tk.Frame):
 			print('There is no field with that number.')
 
 
+	def mismatchInvalid(self):
+
+		self.invalidInputLabel['text'] = "There is a type mismatch in one of the fields **"
+		self.invalidInputLabel['fg'] = "red"
+
+
 	def clearFrame(self):
 
 		self.ageVar.set(0)
@@ -124,9 +130,9 @@ class retrieveDataFrame(tk.Frame):
 		self.intensityVar.set(0)
 
 		self.askAge['text'] = "Age:"
-		self.askWeight['text'] = "Weight:"
-		self.askHeight['text'] = "Height: "
-		self.askGoalWeight['text'] = "Goal Weight:"
+		self.askWeight['text'] = "Start Weight(lbs):"
+		self.askHeight['text'] = "Height(in): "
+		self.askGoalWeight['text'] = "Goal Weight(lbs):"
 		self.askActLvl['text'] = "Activity Level(1-5):"
 		self.askIntensity['text'] = "Caloric Deficit:"
 

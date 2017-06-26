@@ -24,6 +24,7 @@ from Frames.modifyWeightFrame import modifyWeightFrame
 from Frames.deleteWeightFrame import deleteWeightFrame
 from Frames.modifyActivityLvlFrame import modifyActivityLvlFrame
 from Frames.modifyCaloricDeficitFrame import modifyCaloricDeficitFrame
+from Frames.userSummaryFrame import userSummaryFrame
 
 #add model
 from Profile import Profile
@@ -55,6 +56,8 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.subFrames = {}
 
+		self.userProfile = None 
+
 		self.setUpWidgets()
 
 		self.todaysDate = datetime.date.today() #in this class because an instance is created everytime the user logs in so the datetime will be updated.
@@ -83,8 +86,19 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 			"""
 		
 		self.raiseWidget("startFrame")
-		
-		
+	
+
+	def setUpRaiseSummary(self): #information from the userProfile isn't initialized yet so we can't grid them or we will get an error bc self.userProfile = None
+
+		summaryFrame = userSummaryFrame(self.mainFrame,self)
+
+		self.subFrames[userSummaryFrame.__name__] = summaryFrame
+
+		summaryFrame.grid(row=0,column=0,sticky="nsew")
+
+		self.raiseWidget("userSummaryFrame")
+
+
 	def raiseWidget(self, name):
 
 		self.subFrames[name].tkraise()
@@ -135,21 +149,23 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 					break
 
 			if(inSystem == False):
+				
 
 				self.userProfile = Profile(name=potentialProfileName) #normal constructor
 				self.raiseWidget("mistypeCreateFrame")
 
 			else:
 				
+
 				pickle_inProfile = open(potentialProfileName + ".pickle", "rb")
 
 				self.userProfile = pickle.load(pickle_inProfile) #previous object
 
+				self.userProfile.calculateDailySummary()
 
-				self.raiseWidget("mainMenuFrame")
+				self.setUpRaiseSummary() #finally grids the userSummary and raises it
 
-	
-#back actions from start to mainmenu
+			
 
 	def infoInput(self,event):
 
@@ -157,10 +173,17 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.raiseWidget("retrieveDataFrame")
 
 
+#back actions from start to mainmenu
+
 	def backToStart(self,event):
 
 		self.subFrames["startFrame"].clearFrame()
 		self.save()
+		self.raiseWidget("startFrame")
+
+	def backToStartNoSave(self,event):
+
+		self.subFrames["startFrame"].clearFrame()
 		self.raiseWidget("startFrame")
 			
 	def backToProfileValid(self,event):
@@ -172,6 +195,11 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 	def backToMainMenu(self,event):
 
 		self.raiseWidget("mainMenuFrame")
+
+	def backToSummary(self,event):
+
+		self.userProfile.calculateDailySummary()
+		self.setUpRaiseSummary()
 			
 	def exit(self,event): #have to exit throught quit button to save.
 
@@ -196,67 +224,75 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 	def submitInputValid(self,event): 
 
-		inputAge = self.subFrames["retrieveDataFrame"].ageVar.get() #getting info from the view 
-		inputWeight = self.subFrames["retrieveDataFrame"].weightVar.get()
-		inputHeight = self.subFrames["retrieveDataFrame"].heightVar.get()
-		inputGoalWeight = self.subFrames["retrieveDataFrame"].goalWeightVar.get()
-		inputActLvl = self.subFrames["retrieveDataFrame"].activityLvlVar.get()
-		inputIntensity = self.subFrames["retrieveDataFrame"].intensityVar.get()
 
-		passed = True
+		try:
+			inputAge = self.subFrames["retrieveDataFrame"].ageVar.get() #getting info from the view 
+			inputWeight = self.subFrames["retrieveDataFrame"].weightVar.get()
+			inputHeight = self.subFrames["retrieveDataFrame"].heightVar.get()
+			inputGoalWeight = self.subFrames["retrieveDataFrame"].goalWeightVar.get()
+			inputActLvl = self.subFrames["retrieveDataFrame"].activityLvlVar.get()
+			inputIntensity = self.subFrames["retrieveDataFrame"].intensityVar.get()
 
-		#makes sure input is valid before updating model
+			passed = True
 
-		if(inputAge <= 0 or inputAge >=130):
-	
-			self.subFrames["retrieveDataFrame"].fieldInvalid(1)
-			passed=False
+			#makes sure input is valid before updating model
 
-		if(inputWeight <=0 or inputWeight >= 1000):
+			if(inputAge <= 0 or inputAge >=130):
 		
-			self.subFrames["retrieveDataFrame"].fieldInvalid(2)
-			passed=False
+				self.subFrames["retrieveDataFrame"].fieldInvalid(1)
+				passed=False
 
-		if(inputHeight <= 0 or inputHeight >= 84):
+			if(inputWeight <=0 or inputWeight >= 1000):
+			
+				self.subFrames["retrieveDataFrame"].fieldInvalid(2)
+				passed=False
 
-			self.subFrames["retrieveDataFrame"].fieldInvalid(3)
-			passed=False
+			if(inputHeight <= 0 or inputHeight >= 84):
 
-		if(inputGoalWeight >= inputWeight or inputGoalWeight <=0 or inputGoalWeight >= 1000):
+				self.subFrames["retrieveDataFrame"].fieldInvalid(3)
+				passed=False
 
-			self.subFrames["retrieveDataFrame"].fieldInvalid(4)
-			passed=False
+			if(inputGoalWeight >= inputWeight or inputGoalWeight <=0 or inputGoalWeight >= 1000):
 
-		if(inputActLvl < 1 or inputActLvl > 5):
+				self.subFrames["retrieveDataFrame"].fieldInvalid(4)
+				passed=False
 
-			self.subFrames["retrieveDataFrame"].fieldInvalid(5)
-			passed=False
+			if(inputActLvl < 1 or inputActLvl > 5):
 
-		if(inputIntensity != 500 and inputIntensity != 750 and inputIntensity != 1000):
+				self.subFrames["retrieveDataFrame"].fieldInvalid(5)
+				passed=False
 
-			self.subFrames["retrieveDataFrame"].fieldInvalid(6)
-			passed=False
+			if(inputIntensity > 1100):
 
-	
-		if(passed):
-
-			#update the model aka profile object
-			self.userProfile.age = inputAge
-			self.userProfile.currentWeight = inputWeight
-			self.userProfile.currentHeight = inputHeight
-			self.userProfile.goalWeight = inputGoalWeight
-			self.userProfile.actLvl = inputActLvl
-			self.userProfile.intensity = inputIntensity
-
-			#save and pickle it
-			pickle_Save = open(self.userProfile.name + ".pickle", "wb")
-			pickle.dump(self.userProfile, pickle_Save)
-			pickle_Save.close()
+				self.subFrames["retrieveDataFrame"].fieldInvalid(6)
+				passed=False
 
 		
+			if(passed):
 
-			#go to mainMenu
-			self.raiseWidget("mainMenuFrame") 
+				#update the model aka profile object
+				self.userProfile.age = inputAge
+				self.userProfile.startWeight = inputWeight
+				self.userProfile.currentWeight = inputWeight
+				self.userProfile.currentHeight = inputHeight
+				self.userProfile.goalWeight = inputGoalWeight
+				self.userProfile.actLvl = inputActLvl
+				self.userProfile.intensity = inputIntensity
+
+				#save and pickle it
+				pickle_Save = open(self.userProfile.name + ".pickle", "wb")
+				pickle.dump(self.userProfile, pickle_Save)
+				pickle_Save.close()
+
+			
+				#go to summary 
+				self.setUpRaiseSummary()
+
+		except:
+
+			self.subFrames["retrieveDataFrame"].mismatchInvalid()
+
+
 
 
 #Main menu button actions
@@ -337,6 +373,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		if(userDailyWeight >= 90):
 			self.userProfile.weightData[self.todaysDate] = userDailyWeight
+			self.userProfile.currentWeight = userDailyWeight
 			self.subFrames["addDailyWeightFrame"].displaySuccess()
 
 		else:
