@@ -49,3 +49,9 @@ class modifyCaloricDeficitFrame(tk.Frame):
 
 		self.success['text'] = "Success!!!"
 		self.success['fg'] = "blue"
+
+	def fieldInvalid(self):
+
+		self.success['text'] = "Invalid Caloric Deficit (<=1100)"
+		self.success['fg'] = "red"
+		

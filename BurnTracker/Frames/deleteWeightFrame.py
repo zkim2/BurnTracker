@@ -59,3 +59,9 @@ class deleteWeightFrame(tk.Frame):
 
 		self.success['text'] = "Success!!!"
 		self.success['fg'] = "blue"
+
+	def fieldInvalid(self):
+
+		self.success['text'] = "Invalid Date or no such date **"
+		self.success['fg'] = "red"
+		

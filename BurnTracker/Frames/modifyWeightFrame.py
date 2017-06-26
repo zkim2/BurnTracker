@@ -70,4 +70,9 @@ class modifyWeightFrame(tk.Frame):
 		self.success['text'] = "Success!!!"
 		self.success['fg'] = "blue"
 
+	def fieldInvalid(self):
+
+		self.success['text'] = "Invalid date or invalid weight **"
+		self.success['fg'] = "red"
+
 

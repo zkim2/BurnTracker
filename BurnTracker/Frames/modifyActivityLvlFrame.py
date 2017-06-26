@@ -52,3 +52,8 @@ class modifyActivityLvlFrame(tk.Frame):
 
 		self.success['text'] = "Success!!!"
 		self.success['fg'] = "blue"
+
+	def fieldInvalid(self):
+
+		self.success['text'] = "Invalid Activity Level (1-5) **"
+		self.success['fg'] = "red"
