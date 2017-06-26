@@ -2,6 +2,12 @@
 
 A python program that assists users in losing weight by calculating daily caloric consumption and by tracking daily weight loss.
 
+<img width="800" alt="screen shot 2017-06-26 at 2 03 23 pm" src="https://user-images.githubusercontent.com/20529105/27555802-cb9663a6-5a78-11e7-80d2-68f99c2a1dd8.png">
+
+
+<img width="790" alt="screen shot 2017-06-26 at 2 08 28 pm" src="https://user-images.githubusercontent.com/20529105/27555849-f65ac1c2-5a78-11e7-9448-b6b70b952cb8.png">
+
+
 The program's GUI was created with TKinter. 
 
 Users first create a profile in which they enter in physical attributes necessary to calculate and track their progress to reach their fitness goals. (They can edit this data as it changes over time)
