@@ -9,7 +9,7 @@ class modifyActivityLvlFrame(tk.Frame):
 
 		self.controller = controller
 
-
+		self.configure(bg="#586BE4")
 		self.actLvlVar = tk.IntVar()
 
 
@@ -24,21 +24,21 @@ class modifyActivityLvlFrame(tk.Frame):
 		self.grid_rowconfigure(4,weight=1)
 		
 
-		self.modifyActLvlLabel = tk.Label(self,text="What is your new activity level? (1-5)", font=("Helvetica", 25))
+		self.modifyActLvlLabel = tk.Label(self,text="What is your new activity level? (1-5)", font=("Helvetica", 25),bg="#586BE4")
 		self.modifyActLvlLabel.grid(row=0,column=1,sticky="nsew")
 
 
-		self.success = tk.Label(self,text="" ,font=("Helvetica", 15))
+		self.success = tk.Label(self,text="" ,font=("Helvetica", 15),bg="#586BE4")
 		self.success.grid(row=1,column=1,sticky="nsew")
 
-		self.modifyActLvlEntry = tk.Entry(self,textvariable=self.actLvlVar,font=("Helvetica", 20))
+		self.modifyActLvlEntry = tk.Entry(self,textvariable=self.actLvlVar,font=("Helvetica", 20),bd=0)
 		self.modifyActLvlEntry.grid(row=2,column=1,sticky="nsew")
 
-		self.submitButton = tk.Button(self,text="Submit",width=20, font=("Helvetica", 15))
+		self.submitButton = tk.Button(self,text="Submit",width=20, font=("Helvetica", 15),highlightbackground="#586BE4")
 		self.submitButton.bind("<Button-1>",self.controller.submitModifyActLvl)
 		self.submitButton.grid(row=3,column=1)
 
-		self.backButton = tk.Button(self,text="Back",width=20, font=("Helvetica", 15))
+		self.backButton = tk.Button(self,text="Back",width=20, font=("Helvetica", 15),highlightbackground="#586BE4")
 		self.backButton.bind("<Button-1>", self.controller.updateProfileInfo)
 		self.backButton.grid(row=4,column=1)
 

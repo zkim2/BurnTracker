@@ -13,7 +13,8 @@ class modifyCalorieFrame(tk.Frame):
 
 		self.calorieVar = tk.DoubleVar()
 
-		print("hi")
+		self.configure(bg="#586BE4")
+
 		self.grid_columnconfigure(0,weight=1)
 		self.grid_columnconfigure(1,weight=1)
 		self.grid_columnconfigure(2,weight=1)
@@ -25,33 +26,33 @@ class modifyCalorieFrame(tk.Frame):
 		self.grid_rowconfigure(4,weight=1)
 		self.grid_rowconfigure(5,weight=1)
 
-		self.modifyingCalorieLabel = tk.Label(self,text="Modifying Calories", font=("Helvetica", 25))
+		self.modifyingCalorieLabel = tk.Label(self,text="Modifying Calories", font=("Helvetica", 25),bg="#586BE4")
 		self.modifyingCalorieLabel.grid(row=0,column=1, sticky="nsew")
 
-		self.success = tk.Label(self,text="",  font=("Helvetica", 15))
+		self.success = tk.Label(self,text="",  font=("Helvetica", 15),bg="#586BE4")
 		self.success.grid(row=1,column=1,sticky="nsew")
 
 
-		self.dateOfCalories = tk.Label(self,text="Date to modify(MM/DD/YY):", font=("Helvetica", 20))
+		self.dateOfCalories = tk.Label(self,text="Date to modify(MM/DD/YY):", font=("Helvetica", 20),bg="#586BE4")
 		self.dateOfCalories.grid(row=2,column=0, sticky="nsew")
 
-		self.dateOfCaloriesEntry = tk.Entry(self, textvariable = self.dateString, font=("Helvetica", 20))
+		self.dateOfCaloriesEntry = tk.Entry(self, textvariable = self.dateString, font=("Helvetica", 20),bd=1)
 		self.dateOfCaloriesEntry.grid(row=2,column=1,sticky="nsew")
 
 
-		self.updatedCalories = tk.Label(self,text="Updated Calories:", font=("Helvetica", 20))
+		self.updatedCalories = tk.Label(self,text="Updated Calories:", font=("Helvetica", 20),bg="#586BE4")
 		self.updatedCalories.grid(row=3,column=0,sticky="nsew")
 
 
-		self.updatedCaloriesEntry = tk.Entry(self,textvariable=self.calorieVar, font=("Helvetica", 20))
+		self.updatedCaloriesEntry = tk.Entry(self,textvariable=self.calorieVar, font=("Helvetica", 20),bd=1)
 		self.updatedCaloriesEntry.grid(row=3,column=1,sticky="nsew")
 
 
-		self.submitButton = tk.Button(self,text="Submit", width=20, font=("Helvetica", 15))
+		self.submitButton = tk.Button(self,text="Submit", width=20, font=("Helvetica", 15),highlightbackground="#586BE4")
 		self.submitButton.bind("<Button-1>", self.controller.submitModifyCalories)
 		self.submitButton.grid(row=4,column=1)
 
-		self.backButton = tk.Button(self,text="Back", width=20, font=("Helvetica", 15))
+		self.backButton = tk.Button(self,text="Back", width=20, font=("Helvetica", 15),highlightbackground="#586BE4")
 		self.backButton.bind("<Button-1>", self.controller.sendToCalorieMenu)
 		self.backButton.grid(row=5,column=1)
 

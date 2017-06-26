@@ -15,7 +15,7 @@ class startFrame(tk.Frame):
 
 		tk.Frame.__init__(self, parent)
 
-
+		self.configure(bg="#586BE4")
 		self.grid_columnconfigure(0, weight=1)
 		self.grid_columnconfigure(1,weight=1)
 		self.grid_columnconfigure(2, weight=1)
@@ -24,7 +24,8 @@ class startFrame(tk.Frame):
 		self.grid_rowconfigure(0, weight=1)
 		self.grid_rowconfigure(1, weight=0)
 		self.grid_rowconfigure(2, weight=0)
-		self.grid_rowconfigure(3, weight=1)
+		self.grid_rowconfigure(3, weight=0)
+		self.grid_rowconfigure(4, weight=1)
 		
 
 		self.controller = controller
@@ -32,24 +33,27 @@ class startFrame(tk.Frame):
 		self.nameVar = tk.StringVar()
 
 
-		self.welcomeLabel = tk.Label(self, text="BurnTracker", font=("Helvectica",25))
+		self.welcomeLabel = tk.Label(self, text="BurnTracker", font=("Helvectica",35,"bold"), bg= "#586BE4", fg="#B22222")
 		self.welcomeLabel.grid(row=0,column=1,sticky="nsew")
 
-		self.nameEmpty = tk.Label(self,text="", font=("Helvetica",15))
-		self.nameEmpty.grid(row=1, column=1, sticky="nsew")
+		self.descriptionLabel = tk.Label(self,text="A weight loss tracker application that keeps users accountable.", font=("Helvetica", 15), bg="#586BE4")
+		self.descriptionLabel.grid(row=1,column=1,sticky="nsew")
+
+		self.nameEmpty = tk.Label(self,text="", font=("Helvetica",15),bg= "#586BE4")
+		self.nameEmpty.grid(row=2, column=1, sticky="nsew")
 		
-		self.loginLabel = tk.Label(self,text="Profile Name:", font=("Helvectica",20))
-		self.loginLabel.grid(row=2,column=0,sticky="nsew")
+		self.loginLabel = tk.Label(self,text="Profile Name:", font=("Helvectica",20),bg= "#586BE4")
+		self.loginLabel.grid(row=3,column=0,sticky="nsew")
 
 		
-		self.loginEntry = tk.Entry(self,textvariable=self.nameVar, font=("Helvetica", 20))
-		self.loginEntry.grid(row=2,column=1,sticky="nsew")
+		self.loginEntry = tk.Entry(self,textvariable=self.nameVar, font=("Helvetica", 20),bd =0)
+		self.loginEntry.grid(row=3,column=1,sticky="nsew")
 
-		self.submitButton = tk.Button(self, text="Submit",font = ("Helvetica", 15))	
+		self.submitButton = tk.Button(self, text="Submit",font = ("Helvetica", 15),bg="#586BE4", bd=0, borderwidth=0,highlightbackground="#586BE4")	
 		self.submitButton.bind("<Button-1>", self.controller.submitProfileValid)
 		#self.submitButton.focus_set()
 
-		self.submitButton.grid(row=3,column=1)
+		self.submitButton.grid(row=4,column=1)
 
 
 	def clearFrame(self):

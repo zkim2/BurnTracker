@@ -13,6 +13,8 @@ class modifyWeightFrame(tk.Frame):
 
 		self.weightVar = tk.DoubleVar()
 
+		self.configure(bg="#586BE4")
+
 		self.grid_columnconfigure(0,weight=1)
 		self.grid_columnconfigure(1,weight=1)
 		self.grid_columnconfigure(2,weight=1)
@@ -25,33 +27,33 @@ class modifyWeightFrame(tk.Frame):
 		self.grid_rowconfigure(5,weight=1)
 
 
-		self.modifyingWeightLabel = tk.Label(self,text="Modifying Weight", font=("Helvetica",25))
+		self.modifyingWeightLabel = tk.Label(self,text="Modifying Weight", font=("Helvetica",25),bg="#586BE4")
 		self.modifyingWeightLabel.grid(row=0,column=1, sticky="nsew")
 
-		self.success = tk.Label(self,text="", font=("Helvetica", 15))
+		self.success = tk.Label(self,text="", font=("Helvetica", 15),bg="#586BE4")
 		self.success.grid(row=1,column=1,sticky="nsew")
 
 
-		self.dateOfWeight = tk.Label(self,text="Date to modify(MM/DD/YY):",  font=("Helvetica", 20))
+		self.dateOfWeight = tk.Label(self,text="Date to modify(MM/DD/YY):",  font=("Helvetica", 20),bg="#586BE4")
 		self.dateOfWeight.grid(row=2,column=0, sticky="nsew")
 
-		self.dateOfWeightEntry = tk.Entry(self, textvariable = self.dateString, font=("Helvetica", 20))
+		self.dateOfWeightEntry = tk.Entry(self, textvariable = self.dateString, font=("Helvetica", 20),bd=1)
 		self.dateOfWeightEntry.grid(row=2,column=1,sticky="nsew")
 
 
-		self.updatedWeight = tk.Label(self,text="Updated Weight:", font=("Helvetica", 20))
+		self.updatedWeight = tk.Label(self,text="Updated Weight:", font=("Helvetica", 20),bg="#586BE4")
 		self.updatedWeight.grid(row=3,column=0,sticky="nsew")
 
 
-		self.updatedWeightEntry = tk.Entry(self,textvariable=self.weightVar, font=("Helvetica", 20))
+		self.updatedWeightEntry = tk.Entry(self,textvariable=self.weightVar, font=("Helvetica", 20),bd=1)
 		self.updatedWeightEntry.grid(row=3,column=1,sticky="nsew")
 
 
-		self.submitButton = tk.Button(self,text="Submit", width=20, font=("Helvetica", 15))
+		self.submitButton = tk.Button(self,text="Submit", width=20, font=("Helvetica", 15),highlightbackground="#586BE4")
 		self.submitButton.bind("<Button-1>", self.controller.submitModifyWeight)
 		self.submitButton.grid(row=4,column=1)
 
-		self.backButton = tk.Button(self,text="Back", width=20, font=("Helvetica", 15))
+		self.backButton = tk.Button(self,text="Back", width=20, font=("Helvetica", 15),highlightbackground="#586BE4")
 		self.backButton.bind("<Button-1>", self.controller.sendToWeightMenu)
 		self.backButton.grid(row=5,column=1)
 

@@ -43,6 +43,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.mainFrame = tk.Frame(self,width=800,height=500) #all other frames will have this as the parent.
 
 		self.geometry("800x500+500+300")
+		
 		self.title("BurnTracker")
 
 		#not necessary there is only 1 row and 1 column being filled anyway.
@@ -89,6 +90,8 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 	
 
 	def setUpRaiseSummary(self): #information from the userProfile isn't initialized yet so we can't grid them or we will get an error bc self.userProfile = None
+
+		self.userProfile.calculateDailySummary()
 
 		summaryFrame = userSummaryFrame(self.mainFrame,self)
 
@@ -161,7 +164,6 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 				self.userProfile = pickle.load(pickle_inProfile) #previous object
 
-				self.userProfile.calculateDailySummary()
 
 				self.setUpRaiseSummary() #finally grids the userSummary and raises it
 
@@ -196,9 +198,8 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.raiseWidget("mainMenuFrame")
 
-	def backToSummary(self,event):
+	def backToSummary(self,event): #button event of back on mainmenu
 
-		self.userProfile.calculateDailySummary()
 		self.setUpRaiseSummary()
 			
 	def exit(self,event): #have to exit throught quit button to save.
@@ -369,17 +370,39 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 	def submitDailyWeight(self,event):
 
-		userDailyWeight = self.subFrames["addDailyWeightFrame"].weightVar.get()
+		try:
+			userDailyWeight = self.subFrames["addDailyWeightFrame"].weightVar.get()
 
-		if(userDailyWeight >= 90):
-			self.userProfile.weightData[self.todaysDate] = userDailyWeight
-			self.userProfile.currentWeight = userDailyWeight
-			self.subFrames["addDailyWeightFrame"].displaySuccess()
+			"""
+			dateAlready = False
+			
+			for key in self.userProfile.weightData:
 
-		else:
+				if(key == self.todaysDate):
+					
+					dateAlready = True
+
+			if(dateAlready==True):
+
+				self.subFrames["addDailyWeightFrame"].alreadyFound()
+
+			"""
+			if(userDailyWeight >= 90):
+
+				self.userProfile.weightData[self.todaysDate] = userDailyWeight
+				self.userProfile.currentWeight = userDailyWeight
+				self.subFrames["addDailyWeightFrame"].displaySuccess()
+
+			else:
+				self.subFrames["addDailyWeightFrame"].fieldInvalid()
+			
+		except:
+
 			self.subFrames["addDailyWeightFrame"].fieldInvalid()
-	
-		
+
+
+
+
 	#addDailyWeightFrame submit action which will update model.
 
 	def submitDailyCalories(self,event):

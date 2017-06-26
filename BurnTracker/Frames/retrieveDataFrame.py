@@ -9,7 +9,7 @@ class retrieveDataFrame(tk.Frame):
 		self.controller = controller
 
 
-
+		self.configure(bg="#586BE4")
 		self.grid_columnconfigure(0,weight=1)
 		self.grid_columnconfigure(1,weight=1)
 		self.grid_columnconfigure(2,weight=1)
@@ -34,55 +34,55 @@ class retrieveDataFrame(tk.Frame):
 		self.activityLvlVar = tk.IntVar()
 		self.intensityVar = tk.IntVar()
 
-		self.title = tk.Label(self, text="Creating new profile:", font = ("Helvetica", 25))
+		self.title = tk.Label(self, text="Creating new profile:", font = ("Helvetica", 25),bg="#586BE4")
 		self.title.grid(column=1,row=0,sticky="nsew")
 
-		self.invalidInputLabel = tk.Label(self, text="",font=("Helvetica", 15))
+		self.invalidInputLabel = tk.Label(self, text="",font=("Helvetica", 15),bg="#586BE4")
 		self.invalidInputLabel.grid(column=1,row=1,sticky="nsew")
 
-		self.askAge = tk.Label(self,text="Age:",font = ("Helvetica", 20) )
+		self.askAge = tk.Label(self,text="Age:",font = ("Helvetica", 20) ,bg="#586BE4")
 		self.askAge.grid(column=0,row=2,sticky="nsew")
 
-		self.ageEntry = tk.Entry(self, textvariable=self.ageVar,font = ("Helvetica", 20))
+		self.ageEntry = tk.Entry(self, textvariable=self.ageVar,font = ("Helvetica", 20),bd=1)
 		self.ageEntry.grid(column=1,row=2,sticky="nsew")
 
-		self.askWeight = tk.Label(self,text="Weight(lbs):",font = ("Helvetica", 20))
+		self.askWeight = tk.Label(self,text="Weight(lbs):",font = ("Helvetica", 20),bg="#586BE4")
 		self.askWeight.grid(column=0,row=3,sticky="nsew")
 
-		self.weightEntry = tk.Entry(self, textvariable=self.weightVar,font = ("Helvetica", 20))
+		self.weightEntry = tk.Entry(self, textvariable=self.weightVar,font = ("Helvetica", 20),bd=1)
 		self.weightEntry.grid(column=1,row=3,sticky="nsew")
 
 
-		self.askHeight = tk.Label(self,text="Height(inches):",font = ("Helvetica", 20))
+		self.askHeight = tk.Label(self,text="Height(inches):",font = ("Helvetica", 20),bg="#586BE4")
 		self.askHeight.grid(column=0,row=4,sticky="nsew")
 
-		self.heightEntry = tk.Entry(self, textvariable=self.heightVar, font = ("Helvetica", 20))
+		self.heightEntry = tk.Entry(self, textvariable=self.heightVar, font = ("Helvetica", 20),bd=1)
 		self.heightEntry.grid(column=1,row=4,sticky="nsew")
 
 
-		self.askGoalWeight = tk.Label(self,text="Goal Weight(lbs):" ,font = ("Helvetica", 20))
+		self.askGoalWeight = tk.Label(self,text="Goal Weight(lbs):" ,font = ("Helvetica", 20),bg="#586BE4")
 		self.askGoalWeight.grid(column=0,row=5,sticky="nsew")
 
-		self.goalWeightEntry = tk.Entry(self, textvariable=self.goalWeightVar,font = ("Helvetica", 20))
+		self.goalWeightEntry = tk.Entry(self, textvariable=self.goalWeightVar,font = ("Helvetica", 20),bd=1)
 		self.goalWeightEntry.grid(column=1,row=5,sticky="nsew")
 
-		self.askActLvl = tk.Label(self,text="Activity Level (1-5):" ,font = ("Helvetica", 20))
+		self.askActLvl = tk.Label(self,text="Activity Level (1-5):" ,font = ("Helvetica", 20),bg="#586BE4")
 		self.askActLvl.grid(column=0,row=6,sticky="nsew")
 
-		self.actLvlEntry = tk.Entry(self, textvariable=self.activityLvlVar ,font = ("Helvetica", 20))
+		self.actLvlEntry = tk.Entry(self, textvariable=self.activityLvlVar ,font = ("Helvetica", 20),bd=1)
 		self.actLvlEntry.grid(column=1,row=6,sticky="nsew")
 
-		self.askIntensity = tk.Label(self,text="Caloric Deficit:" ,font = ("Helvetica", 20))
+		self.askIntensity = tk.Label(self,text="Caloric Deficit:" ,font = ("Helvetica", 20),bg="#586BE4")
 		self.askIntensity.grid(column=0,row=7,sticky="nsew")
 
-		self.intensityEntry = tk.Entry(self, textvariable=self.intensityVar ,font = ("Helvetica", 20))
+		self.intensityEntry = tk.Entry(self, textvariable=self.intensityVar ,font = ("Helvetica", 20), bd=1)
 		self.intensityEntry.grid(column=1,row=7,sticky="nsew")
 
-		self.submitButton = tk.Button(self, text="Submit",width = 20,font = ("Helvetica", 15))
+		self.submitButton = tk.Button(self, text="Submit",width = 20,font = ("Helvetica", 15),highlightbackground="#586BE4")
 		self.submitButton.bind("<Button-1>", self.controller.submitInputValid)
 		self.submitButton.grid(column=1, row=8)
 
-		self.backButton = tk.Button(self, text="Back",width=20,font = ("Helvetica", 15))
+		self.backButton = tk.Button(self, text="Back",width=20,font = ("Helvetica", 15),highlightbackground="#586BE4")
 		self.backButton.bind("<Button-1>", self.controller.backToProfileValid)
 		self.backButton.grid(column=1, row=9)
 
