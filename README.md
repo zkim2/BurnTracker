@@ -20,6 +20,11 @@ User profile data can be represented as a graph using matplotlib.
 
 User profile objects are pickled so the structures holding the data can be retrieved the next time the user accesses the program. 
 
+To run the program for now:
+
+python3 ./main.py
+
+I will have an executable up soon.
 
 *The pickled files must always remain in the same directory as the script or it will think you are trying to create a new profile.*
 
