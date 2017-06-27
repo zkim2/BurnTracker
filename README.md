@@ -7,6 +7,8 @@ A python program that assists users in losing weight by calculating daily calori
 
 <img width="790" alt="screen shot 2017-06-26 at 2 08 28 pm" src="https://user-images.githubusercontent.com/20529105/27555849-f65ac1c2-5a78-11e7-9448-b6b70b952cb8.png">
 
+<img width="796" alt="screen shot 2017-06-27 at 9 21 52 am" src="https://user-images.githubusercontent.com/20529105/27592448-203cbeea-5b1a-11e7-8efc-bd4c61c48641.png">
+
 
 The program's GUI was created with TKinter. 
 
