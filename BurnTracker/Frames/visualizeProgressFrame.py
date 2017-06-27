@@ -22,12 +22,12 @@ class visualizeProgressFrame(tk.Frame):
 
 
 		self.weightGraphButton = tk.Button(self, text="Weight Graph", width=20, font=("Helvetica", 15), highlightbackground="#586BE4")
-		self.weightGraphButton.bind("<Button-1>", self.controller.graphWeightLoss)
+		self.weightGraphButton.bind("<Button-1>", self.controller.setUpWeightGraph)
 		self.weightGraphButton.grid(row=1,column=1)
 
 
 		self.calorieGraphButton = tk.Button(self,text="Calorie Graph", width=20, font=("Helvetica", 15),highlightbackground="#586BE4")
-		self.calorieGraphButton.bind("<Button-1>", self.controller.graphCalories)
+		self.calorieGraphButton.bind("<Button-1>", self.controller.setUpCalorieGraph)
 		self.calorieGraphButton.grid(row=2,column=1)
 
 

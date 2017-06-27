@@ -2,9 +2,6 @@ import tkinter as tk
 import datetime
 import os
 import pickle
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib import pyplot as plt
 
 
 #add all the frames...
@@ -25,6 +22,8 @@ from Frames.deleteWeightFrame import deleteWeightFrame
 from Frames.modifyActivityLvlFrame import modifyActivityLvlFrame
 from Frames.modifyCaloricDeficitFrame import modifyCaloricDeficitFrame
 from Frames.userSummaryFrame import userSummaryFrame
+from Frames.weightGraphFrame import weightGraphFrame
+from Frames.calorieGraphFrame import calorieGraphFrame
 
 #add model
 from Profile import Profile
@@ -42,8 +41,8 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.mainFrame = tk.Frame(self,width=800,height=500) #all other frames will have this as the parent.
 
-		self.geometry("800x500+500+300")
-		
+		self.geometry("800x500+500+300") #doesn't expand with resize currently.
+
 		self.title("BurnTracker")
 
 		#not necessary there is only 1 row and 1 column being filled anyway.
@@ -51,6 +50,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.mainFrame.grid_rowconfigure(0, weight=1)
 		
 		self.mainFrame.grid_propagate(False) #frames resize to mainFrame
+
 		#self.protocol("WM_DELETE_WINDOW", self.xButton)
 
 		self.mainFrame.grid(row=0,column=0,sticky="nsew")
@@ -63,11 +63,15 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.todaysDate = datetime.date.today() #in this class because an instance is created everytime the user logs in so the datetime will be updated.
 
+
 	def printProfile(self):
 
 		print(self.userProfile.name)
 		print(self.userProfile.caloricData)
 		print(self.userProfile.weightData)
+
+
+#initializations of frames
 
 	def setUpWidgets(self):
 
@@ -102,6 +106,23 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		self.raiseWidget("userSummaryFrame")
 
 
+	def setUpWeightGraph(self,event): #information from the userProfile isn't initialized yet so we can't grid them or we will get an error bc self.userProfile = None
+
+		weightFrame = weightGraphFrame(self.mainFrame,self)
+		self.subFrames[weightGraphFrame.__name__] = weightFrame
+		weightFrame.grid(row=0,column=0,sticky="nsew")
+
+		self.raiseWidget("weightGraphFrame")
+
+
+	def setUpCalorieGraph(self,event):
+
+		calorieFrame = calorieGraphFrame(self.mainFrame,self)
+		self.subFrames[calorieGraphFrame.__name__] = calorieFrame
+		calorieFrame.grid(row=0,column=0,sticky="nsew")
+
+		self.raiseWidget("calorieGraphFrame")
+
 	def raiseWidget(self, name):
 
 		self.subFrames[name].tkraise()
@@ -117,7 +138,9 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		exit()
 		"""
 
-#start frame field submit
+#button actions
+
+	#start frame field submit
 
 	def submitProfileValid(self,event): 
 
@@ -168,14 +191,14 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 				self.setUpRaiseSummary() #finally grids the userSummary and raises it
 
 			
-
+	#create a new profile submit
 	def infoInput(self,event):
 
 		self.subFrames["retrieveDataFrame"].clearFrame() #always clear it before next input
 		self.raiseWidget("retrieveDataFrame")
 
 
-#back actions from start to mainmenu
+#back actions 
 
 	def backToStart(self,event):
 
@@ -201,6 +224,10 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 	def backToSummary(self,event): #button event of back on mainmenu
 
 		self.setUpRaiseSummary()
+
+	def backToVisualizationMenu(self,event):
+
+		self.raiseWidget("visualizeProgressFrame")
 			
 	def exit(self,event): #have to exit throught quit button to save.
 
@@ -221,7 +248,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 	
 
-#new profile field submit
+	#new profile field submit
 
 	def submitInputValid(self,event): 
 
@@ -296,7 +323,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 
 
-#Main menu button actions
+	#Main menu button actions
 
 	def addDailyWeight(self,event):
 
@@ -318,7 +345,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 
 
-#profile update button actions
+	#profile update button actions
 
 
 	#calorie submenu button actions
@@ -373,20 +400,6 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		try:
 			userDailyWeight = self.subFrames["addDailyWeightFrame"].weightVar.get()
 
-			"""
-			dateAlready = False
-			
-			for key in self.userProfile.weightData:
-
-				if(key == self.todaysDate):
-					
-					dateAlready = True
-
-			if(dateAlready==True):
-
-				self.subFrames["addDailyWeightFrame"].alreadyFound()
-
-			"""
 			if(userDailyWeight >= 90):
 
 				self.userProfile.weightData[self.todaysDate] = userDailyWeight
@@ -407,21 +420,28 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 	def submitDailyCalories(self,event):
 
-		userDailyCalories = self.subFrames["addDailyCaloriesFrame"].caloriesVar.get()
 
-		if(userDailyCalories >= 1000):
+		try:
 
-			self.userProfile.caloricData[self.todaysDate] = userDailyCalories
-			self.subFrames["addDailyCaloriesFrame"].displaySuccess()
-			self.printProfile()
+			userDailyCalories = self.subFrames["addDailyCaloriesFrame"].caloriesVar.get()
 
-		else:
+			if(userDailyCalories >= 1000):
+
+				self.userProfile.caloricData[self.todaysDate] = userDailyCalories
+				self.subFrames["addDailyCaloriesFrame"].displaySuccess()
+				self.printProfile()
+
+			else:
+
+				self.subFrames["addDailyCaloriesFrame"].fieldInvalid()
+
+		except:
 
 			self.subFrames["addDailyCaloriesFrame"].fieldInvalid()
 
-		#add feature that warns user about adding multiple entries on the same day.
+
 		
-	#calorie submenu field submit
+	#calorie modify submit
 	def submitModifyCalories(self,event):
 
 		dateOfCalories = self.subFrames["modifyCalorieFrame"].dateString.get()
@@ -452,7 +472,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 			self.subFrames["modifyCalorieFrame"].fieldInvalid()
 
 
-
+	#calorie delete submit
 	def submitDeleteCalories(self,event):
 
 		dateToDelete = self.subFrames["deleteCalorieFrame"].dateString.get()
@@ -595,32 +615,3 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		except:
 
 			self.subFrames["modifyCaloricDeficitFrame"].fieldInvalid()
-
-	#graphing button actions
-	def graphWeightLoss(self,event):
-
-		sortedData = sorted(self.userProfile.weightData.items(), key = lambda d: d[0])
-
-		
-		plt.suptitle('Weight Loss Progress for ' + self.userProfile.name + ' as of ' + self.todaysDate.strftime("%m/%d/%y"), fontsize=14, fontweight='bold')
-		"""
-		#x are the keys(dateTime objects) and y are the weights
-		x,y = zip(*sortedData)
-		plt.plot(x,y)
-		plt.ylabel('Weight (lbs)')
-		plt.xlabel('Time (days)')
-	"""
-		plt.show()
-		
-
-	def graphCalories(self,event):
-
-		sortedData = sorted(self.userProfile.caloricData.items(), key = lambda d: d[0])
-
-		plt.suptitle('Calories over time for ' + self.userProfile.name + ' as of' + self.todaysDate.strftime("%m/%d/%y"), fontsize=14, fontweight='bold')
-
-		x,y = zip(*sortedData)
-		plt.plot(x,y)
-		plt.ylabel('Calories')
-		plt.xlabel('Time (days)')
-		plt.show()
