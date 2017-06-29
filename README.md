@@ -2,6 +2,8 @@
 
 A python program that assists users in losing weight by calculating daily caloric consumption and by tracking daily weight loss.
 
+Here are some frames in the GUI:
+
 <img width="800" alt="screen shot 2017-06-26 at 2 03 23 pm" src="https://user-images.githubusercontent.com/20529105/27555802-cb9663a6-5a78-11e7-80d2-68f99c2a1dd8.png">
 
 
