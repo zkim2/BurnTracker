@@ -55,15 +55,16 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 
 		self.mainFrame.grid(row=0,column=0,sticky="nsew")
 
-		self.subFrames = {}
+		self.subFrames = {} #holds all the frames
 
-		self.userProfile = None 
+		self.userProfile = None #model not initialized 
 
-		self.setUpWidgets()
+		self.setUpWidgets() 
 
 		self.todaysDate = datetime.date.today() #in this class because an instance is created everytime the user logs in so the datetime will be updated.
 
 
+	#debugging function
 	def printProfile(self):
 
 		print(self.userProfile.name)
@@ -239,7 +240,7 @@ class ProfileWindow(tk.Tk): #this is inheriting from the top most level and will
 		#add saveFeature
 		exit()
 
-	def save(self):
+	def save(self): #if the user doesn't exit and goes back to the home screen we need to save the data.
 
 		self.printProfile()
 		pickle_Save = open(self.userProfile.name + ".pickle", "wb")

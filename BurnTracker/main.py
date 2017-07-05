@@ -1,4 +1,4 @@
-from WeightLossGUI import ProfileWindow
+from BurnTrackerGUI import ProfileWindow
 
 
 if(__name__ == '__main__'):
